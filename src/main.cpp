@@ -71,9 +71,15 @@ int main(int argc, char* argv[])
     handler.addGameObject(player);
 
     bool quit = false;
+	const int MAX_FPS = 60;
+	const int MAX_DELTA_MS = 1.0f / MAX_FPS * 1000;
+	unsigned int startTicks = SDL_GetTicks();
+	unsigned int deltaMs = MAX_DELTA_MS;
+	unsigned int endTicks = SDL_GetTicks();
 
     while(quit == false)
     {
+		startTicks = SDL_GetTicks();
         gcore.clearRenderer();
         InputEvent event = input.getNextEvent();
         while(event != NONE)
@@ -98,7 +104,14 @@ int main(int argc, char* argv[])
         handler.drawAll();
         gcore.presentRenderer();
 
-        SDL_Delay(1/24);
+
+		endTicks = SDL_GetTicks();
+		deltaMs = endTicks - startTicks;
+		if (deltaMs < MAX_DELTA_MS) {
+			SDL_Delay(MAX_DELTA_MS - deltaMs);
+			deltaMs = MAX_DELTA_MS;
+		}
+		Logger.logMessage(LOG_WARNING,LOG_CORE, "DELTA: %u\n", deltaMs);
     }
 
 stop:
