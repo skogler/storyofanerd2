@@ -86,14 +86,14 @@ int main(int argc, char* argv[])
             event = input.getNextEvent();
         }
 
-    //    if(player.get()->checkCollision(*(clipped.get())))
-    //    {
-    //        Logger.logMessage(LOG_WARNING, LOG_CORE, "COLLISION DETECTED\n");
-    //    }
-    //    else
-    //    {
-    //        Logger.logMessage(LOG_WARNING, LOG_CORE, "NO COLLISION DETECTED\n");
-    //    }
+        if(player.get()->checkCollision(*(clipped.get())))
+        {
+            Logger.logMessage(LOG_WARNING, LOG_CORE, "COLLISION DETECTED\n");
+        }
+        else
+        {
+            Logger.logMessage(LOG_WARNING, LOG_CORE, "NO COLLISION DETECTED\n");
+        }
         handler.updateAll();
         handler.drawAll();
         gcore.presentRenderer();

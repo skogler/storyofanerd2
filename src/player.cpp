@@ -51,10 +51,10 @@ Player::~Player()
 
 void Player::update()
 {
-    //Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::update start\n");
+    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::update start\n");
     m_graphics_objects.at(0).get()->setX(m_position_x);
     m_graphics_objects.at(0).get()->setY(m_position_y);
-    //Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::update end\n");
+    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::update end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ bool Player::handleKeyEvent(const InputEvent &event)
 {
     assert(event);
 
-    //Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::handleKeyEvent start\n");
+    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::handleKeyEvent start\n");
 
     switch(event)
     {
@@ -83,6 +83,6 @@ bool Player::handleKeyEvent(const InputEvent &event)
             break;
     }
 
-    //Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::handleKeyEvent end\n");
+    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::handleKeyEvent end\n");
     return false;
 }
