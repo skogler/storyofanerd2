@@ -75,7 +75,7 @@ GameObject::~GameObject()
 
 ///////////////////////////////////////////////////////////////////////////
 
-bool GameObject::checkCollision(const GameObject &other)
+bool GameObject::checkCollision(const GameObject &other) const
 {
     if(this->hasCollisionEnabled() == false ||
        other.hasCollisionEnabled() == false)

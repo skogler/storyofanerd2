@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
     shared_ptr<ClippedMap> clipped(new ClippedMap(&lmap));
     clipped.get()->copyTilesToRender(0, -100);
 
-    shared_ptr<Player> player(new Player("../res/player.bmp", 0, 0));
+    shared_ptr<Player> player(new Player("../res/player.bmp", 20, 300));
 
     handler.addGameObject(clipped);
     handler.addGameObject(player);
@@ -86,14 +86,6 @@ int main(int argc, char* argv[])
             event = input.getNextEvent();
         }
 
-        if(player.get()->checkCollision(*(clipped.get())))
-        {
-            Logger.logMessage(LOG_WARNING, LOG_CORE, "COLLISION DETECTED\n");
-        }
-        else
-        {
-            Logger.logMessage(LOG_WARNING, LOG_CORE, "NO COLLISION DETECTED\n");
-        }
         handler.updateAll();
         handler.drawAll();
         gcore.presentRenderer();

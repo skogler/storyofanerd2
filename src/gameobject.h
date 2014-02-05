@@ -46,6 +46,11 @@ class GameObject
         GameObject(const string &id, const bool &collision = true);
         virtual ~GameObject();
 
+        inline bool operator==(const GameObject &rhs) const
+        {
+            return m_id == rhs.getId();
+        }
+
         inline const vector<shared_ptr <GraphicsObject> >& getGraphicsObjects() const
         {
             return m_graphics_objects;
@@ -56,12 +61,17 @@ class GameObject
             return m_collision;
         }
 
+        inline const string getId() const
+        {
+            return m_id;
+        }
+
         virtual void update();
         virtual void drawAll();
         virtual bool handleKeyEvent(const InputEvent &event);
         void addGraphicsObject(shared_ptr<GraphicsObject> obj);
 
-        virtual bool checkCollision(const GameObject &other);
+        virtual bool checkCollision(const GameObject &other) const;
 
     protected:
         //TODO: create vector<int> m_draw_objects_at?
