@@ -88,7 +88,7 @@ class Objecthandler
                 //Cant collide with ourselves
                 if(object == *(m_game_objects.at(i).get()))
                 {
-                    return false;
+                    continue;
                 }
 
                 if(object.checkCollision(*(m_game_objects.at(i).get())) == true)
