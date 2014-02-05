@@ -36,18 +36,23 @@ Player::Player(const string &bmpfile, uint position_x, uint position_y) :
     m_next_position_x(position_x),
     m_next_position_y(position_y)
 {
+    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::Player start\n");
+
     shared_ptr<SDL_Texture> texture(GraphicsCore::instance().createTextureFromBMP(bmpfile),
                                     SDL_DestroyTexture);
 
     shared_ptr<GraphicsObject> playergraphics(new GraphicsObject(texture, m_position_x, m_position_y));
 
     this->addGraphicsObject(playergraphics);
+
+    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::Player end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 Player::~Player()
 {
+    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::~Player\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -63,7 +68,7 @@ void Player::update()
 
     if(has_collision == true)
     {
-        Logger.logMessage(LOG_DEBUG, LOG_PLAYER, "Player::update: Collided, resetting x/y.\n");
+        Logger.logMessage(LOG_DEBUG2, LOG_PLAYER, "Player::update: Collided, resetting x/y.\n");
 
         //Don't update, reset position
         m_graphics_objects.at(0).get()->setX(m_position_x);
@@ -74,7 +79,7 @@ void Player::update()
     }
     else
     {
-        Logger.logMessage(LOG_DEBUG, LOG_PLAYER, "Player::update: Did not collide with anything!\n");
+        Logger.logMessage(LOG_DEBUG2, LOG_PLAYER, "Player::update: Did not collide with anything!\n");
         m_position_x = m_next_position_x;
         m_position_y = m_next_position_y;
     }
@@ -86,9 +91,9 @@ void Player::update()
 
 bool Player::handleKeyEvent(const InputEvent &event)
 {
-    assert(event);
-
     Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::handleKeyEvent start\n");
+
+    assert(event);
 
     switch(event)
     {

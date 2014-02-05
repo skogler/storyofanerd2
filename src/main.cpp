@@ -42,7 +42,7 @@ using std::dynamic_pointer_cast;
 int main(int argc, char* argv[])
 {
     GameCore &core = GameCore::instance();
-    core.logger().setLogLevel(LOG_STATE);
+    core.logger().setLogLevel(LOG_DEBUG2);
     core.logger().addLoggingCategory(LOG_CORE);
     core.logger().addLoggingCategory(LOG_MAP);
     core.logger().addLoggingCategory(LOG_SDL2_GRAPHICS);
