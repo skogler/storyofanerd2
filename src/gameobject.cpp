@@ -75,8 +75,10 @@ GameObject::~GameObject()
 
 ///////////////////////////////////////////////////////////////////////////
 
-bool GameObject::checkCollision(const GameObject &other)
+bool GameObject::checkCollision(const GameObject &other) const
 {
+    Logger.logMessage(LOG_STATE, LOG_CORE, "GameObject::checkCollision: start\n");
+
     if(this->hasCollisionEnabled() == false ||
        other.hasCollisionEnabled() == false)
     {
@@ -96,6 +98,7 @@ bool GameObject::checkCollision(const GameObject &other)
         }
     }
 
+    Logger.logMessage(LOG_STATE, LOG_CORE, "GameObject::checkCollision: end\n");
     return false;
 }
 

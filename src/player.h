@@ -51,6 +51,9 @@ class Player : public GameObject
         uint m_position_x;
         uint m_position_y;
 
+        uint m_next_position_x;
+        uint m_next_position_y;
+
         DISABLECOPY(Player);
 };
 

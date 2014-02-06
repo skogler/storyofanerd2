@@ -36,15 +36,20 @@ ClippedMap::ClippedMap(LoadedMap *lmap) :
     m_tile_set_surface(NULL),
     m_tile_set(NULL)
 {
+    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::ClippedMap start\n");
+
     loadTexture();
     createClips();
     parseTileData();
+
+    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::ClippedMap end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 ClippedMap::~ClippedMap()
 {
+    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::~ClippedMap\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////

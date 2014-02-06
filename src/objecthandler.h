@@ -81,6 +81,25 @@ class Objecthandler
             m_game_objects.push_back(object);
         }
 
+        bool checkCollision(const GameObject &object)
+        {
+            for(uint i = 0; i < m_game_objects.size(); i++)
+            {
+                //Cant collide with ourselves
+                if(object == *(m_game_objects.at(i).get()))
+                {
+                    continue;
+                }
+
+                if(object.checkCollision(*(m_game_objects.at(i).get())) == true)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     private:
         Objecthandler()
         {
@@ -93,5 +112,9 @@ class Objecthandler
 
         DISABLECOPY(Objecthandler);
 };
+
+///////////////////////////////////////////////////////////////////////////
+
+#define Scene Objecthandler::instance()
 
 #endif
