@@ -30,6 +30,7 @@
 
 GraphicsObject::GraphicsObject(shared_ptr<SDL_Texture> texture,
                                int x, int y, uint h, uint w) :
+                m_enabled(true),
                 m_texture(texture),
                 m_clip(NULL)
 {
@@ -47,6 +48,7 @@ GraphicsObject::GraphicsObject(shared_ptr<SDL_Texture> texture,
 GraphicsObject::GraphicsObject(shared_ptr<SDL_Texture> texture,
                                shared_ptr<SDL_Rect> clip,
                                shared_ptr<SDL_Rect> dst) :
+                m_enabled(true),
                 m_texture(texture),
                 m_clip(clip), m_dst(dst)
 {
@@ -63,6 +65,11 @@ GraphicsObject::~GraphicsObject()
 
 void GraphicsObject::drawObject()
 {
+    if(m_enabled == false)
+    {
+        return;
+    }
+
     if(m_clip != NULL)
     {
         GraphicsCore::instance().renderTextureClip(m_texture.get(), m_clip.get(), m_dst.get());

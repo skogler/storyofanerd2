@@ -47,6 +47,16 @@ class GraphicsObject
 
         void drawObject();
 
+        inline bool getEnabled() const
+        {
+            return m_enabled;
+        }
+
+        inline void setEnabled(bool enabled)
+        {
+            m_enabled = enabled;
+        }
+
         inline void setX(int x)
         {
             m_dst.get()->x = x;
@@ -87,6 +97,7 @@ class GraphicsObject
         ~GraphicsObject();
 
     private:
+        bool                    m_enabled;
         shared_ptr<SDL_Texture> m_texture;
 
         shared_ptr<SDL_Rect>        m_clip;

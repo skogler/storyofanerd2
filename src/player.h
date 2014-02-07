@@ -29,9 +29,14 @@
 
 #include <SDL2/SDL.h>
 
+#include <map>
+
 #include "common.h"
 #include "core.h"
 #include "gameobject.h"
+#include "states.h"
+
+using std::map;
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -42,17 +47,45 @@ class Player : public GameObject
         explicit Player(const string &bmpfile,
                         uint position_x = 0,
                         uint position_y = 0);
+        explicit Player(const string &sprite,
+                        uint sprite_x, uint sprite_y,
+                        uint clip_x, uint clip_y,
+                        uint position_x = 0, uint position_y = 0);
         virtual ~Player();
 
         virtual void update();
         virtual bool handleKeyEvent(const InputEvent &event);
 
+        virtual void addAnimationSequenceFromSprite(MovingState state, MovingStateSequence seq);
+
     private:
+        void createClipsFromSprite();
+        void createGraphicsObjects();
+
+        int findMatchingAnimationGraphicsObject();
+
         uint m_position_x;
         uint m_position_y;
 
         uint m_next_position_x;
         uint m_next_position_y;
+
+        uint m_sprite_x;
+        uint m_sprite_y;
+
+        uint m_clip_x;
+        uint m_clip_y;
+
+        vector<shared_ptr<SDL_Rect> > m_player_clips;
+        shared_ptr<SDL_Surface> m_sprite_surface;
+        shared_ptr<SDL_Texture> m_sprite_texture;
+
+        MovingState             m_previous_state;
+        MovingState             m_current_state;
+
+        int                     m_previous_animation_index;
+
+        map<MovingState, MovingStateSequence>   m_moving_animations;
 
         DISABLECOPY(Player);
 };
