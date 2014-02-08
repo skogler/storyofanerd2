@@ -43,6 +43,8 @@ using std::map;
 //TODO: Inheritance Hierachy: Gameobject --> Unit --> Player
 class Player : public GameObject
 {
+    DISABLECOPY(Player);
+
     public:
         explicit Player(const string &bmpfile,
                         uint position_x = 0,
@@ -80,14 +82,7 @@ class Player : public GameObject
         shared_ptr<SDL_Surface> m_sprite_surface;
         shared_ptr<SDL_Texture> m_sprite_texture;
 
-        MovingState             m_previous_state;
-        MovingState             m_current_state;
-
-        int                     m_previous_animation_index;
-
-        map<MovingState, MovingStateSequence>   m_moving_animations;
-
-        DISABLECOPY(Player);
+        MovingStateSequencer m_sequencer;
 };
 
 ///////////////////////////////////////////////////////////////////////////

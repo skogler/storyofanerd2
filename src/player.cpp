@@ -65,8 +65,7 @@ Player::Player(const string &sprite,
     m_next_position_y(position_y),
     m_sprite_x(sprite_x), m_sprite_y(sprite_y),
     m_clip_x(clip_x), m_clip_y(clip_y),
-    m_previous_state(LOOK_RIGHT), m_current_state(LOOK_RIGHT),
-    m_previous_animation_index(0)
+    m_sequencer(LOOK_RIGHT)
 {
     //TODO:fix
     //SDL_Surface *sprite_surface = IMG_Load(("../res/maps/" + sprite.c_str());
@@ -96,15 +95,18 @@ void Player::update()
 {
     Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::update start\n");
 
-    int animation_index = findMatchingAnimationGraphicsObject();
+    m_sequencer.applyNextState();
+
+    int undraw_index    = m_sequencer.getLastAnimationIndex();
+    int draw_index      = m_sequencer.updateCurrentAnimationIndex();
 
     //First, disable the old one
-    m_graphics_objects.at(m_previous_animation_index).get()->setEnabled(false);
+    m_graphics_objects.at(undraw_index).get()->setEnabled(false);
 
     //Then activate the new one
-    m_graphics_objects.at(animation_index).get()->setEnabled(true);
-    m_graphics_objects.at(animation_index).get()->setX(m_next_position_x);
-    m_graphics_objects.at(animation_index).get()->setY(m_next_position_y);
+    m_graphics_objects.at(draw_index).get()->setEnabled(true);
+    m_graphics_objects.at(draw_index).get()->setX(m_next_position_x);
+    m_graphics_objects.at(draw_index).get()->setY(m_next_position_y);
 
     bool has_collision = Scene.checkCollision(*this);
 
@@ -113,8 +115,8 @@ void Player::update()
         Logger.logMessage(LOG_DEBUG2, LOG_PLAYER, "Player::update: Collided, resetting x/y.\n");
 
         //Don't update, reset position
-        m_graphics_objects.at(animation_index).get()->setX(m_position_x);
-        m_graphics_objects.at(animation_index).get()->setY(m_position_y);
+        m_graphics_objects.at(draw_index).get()->setX(m_position_x);
+        m_graphics_objects.at(draw_index).get()->setY(m_position_y);
 
         m_next_position_x = m_position_x;
         m_next_position_y = m_position_y;
@@ -125,13 +127,6 @@ void Player::update()
         m_position_x = m_next_position_x;
         m_position_y = m_next_position_y;
     }
-
-    //Update previous states
-    m_previous_state           = m_current_state;
-    m_previous_animation_index = animation_index;
-
-    //revert to state
-    m_current_state = m_moving_animations.find(m_previous_state)->second.revert_to;
 
     Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::update end\n");
 }
@@ -148,19 +143,19 @@ bool Player::handleKeyEvent(const InputEvent &event)
     {
         case PLAYER_RIGHT:
             m_next_position_x = m_next_position_x + MOVING_STEP;
-            m_current_state = MOVE_RIGHT;
+            m_sequencer.setNextState(MOVE_RIGHT);
             return true;
         case PLAYER_LEFT:
             m_next_position_x = m_next_position_x - MOVING_STEP;
-            m_current_state = MOVE_LEFT;
+            m_sequencer.setNextState(MOVE_LEFT);
             return true;
         case PLAYER_DOWN:
             m_next_position_y = m_next_position_y + MOVING_STEP;
-            m_current_state = MOVE_FRONT;
+            m_sequencer.setNextState(MOVE_FRONT);
             return true;
         case PLAYER_UP:
             m_next_position_y = m_next_position_y - MOVING_STEP;
-            m_current_state = MOVE_BACK;
+            m_sequencer.setNextState(MOVE_BACK);
             return true;
         default:
             break;
@@ -174,7 +169,7 @@ bool Player::handleKeyEvent(const InputEvent &event)
 
 void Player::addAnimationSequenceFromSprite(MovingState state, MovingStateSequence seq)
 {
-    m_moving_animations.insert(std::pair<MovingState, MovingStateSequence>(state, seq));
+    m_sequencer.addSequence(state, seq);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -220,31 +215,3 @@ void Player::createGraphicsObjects()
 }
 
 ///////////////////////////////////////////////////////////////////////////
-
-int Player::findMatchingAnimationGraphicsObject()
-{
-    map<MovingState, MovingStateSequence>::iterator it = m_moving_animations.begin();
-
-    //default to standing
-    int found_state = 0;
-
-    while(it != m_moving_animations.end())
-    {
-        if(it->first == m_current_state)
-        {
-            if((unsigned)it->second.last_animation_index == it->second.possible_animations.size() - 1)
-            {
-                it->second.last_animation_index = 0;
-                return it->second.possible_animations.at(0);
-            }
-            else
-            {
-                it->second.last_animation_index = it->second.last_animation_index + 1;
-                return it->second.possible_animations.at(it->second.last_animation_index);
-            }
-        }
-        ++it;
-    }
-
-    return found_state;
-}
