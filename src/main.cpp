@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
     core.logger().addLoggingCategory(LOG_SDL2_GRAPHICS);
     core.logger().addLoggingCategory(LOG_PLAYER);
 
-    LoadedMap lmap("../res/maps/testmap.tmx");
+    LoadedMap lmap("../res/maps/testmapbig.tmx");
     ErrorCode file_loaded = lmap.loadFile();
     UNUSED(file_loaded);
 

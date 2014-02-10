@@ -58,10 +58,15 @@ void ClippedMap::copyTilesToRender(int viewport_x, int viewport_y)
 {
     Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::copyTilesToRender start\n");
 
+    //TODO: remove viewport variables
+    UNUSED(viewport_x);
+    UNUSED(viewport_y);
+
     uint x_coord = 0;
     uint y_coord = 0;
 
     int current_clip = 0;
+
     for(vector<int>::iterator it = m_tile_data_parsed.begin();
         it != m_tile_data_parsed.end(); ++it)
     {
@@ -77,13 +82,13 @@ void ClippedMap::copyTilesToRender(int viewport_x, int viewport_y)
         if(current_clip != 0)
         {
             shared_ptr<GraphicsObject> gobj(new GraphicsObject(m_tile_set,
-                                            m_map_clips.at(current_clip),
+                                            m_map_clips.at(current_clip - 1),
                                             dst));
             addGraphicsObject(gobj);
         }
 
         x_coord = x_coord + m_loaded_map->getTileMap().tilewidth;
-        if(x_coord == m_loaded_map->getTileMap().width * m_loaded_map->getTileMap().tilewidth)
+        if(x_coord >= m_loaded_map->getTileMap().width * m_loaded_map->getTileMap().tilewidth)
         {
             x_coord = 0;
             y_coord = y_coord + m_loaded_map->getTileMap().tileheight;
@@ -106,13 +111,13 @@ void ClippedMap::createClips()
     uint number_tiles_width  = m_surface_width / tile_w;
     uint number_tiles_height = m_surface_height / tile_h;
 
-    for(uint i = 0; i < number_tiles_width; i++)
+    for(uint j = 0; j < number_tiles_height; j++)
     {
-        for(uint j = 0; j < number_tiles_height; j++)
+        for(uint i = 0; i < number_tiles_width; i++)
         {
             shared_ptr<SDL_Rect> rect(new SDL_Rect());
-            rect.get()->x  = i + tile_w;
-            rect.get()->y  = j + tile_h;
+            rect.get()->x  = i * (tile_w + 1);
+            rect.get()->y  = j * (tile_h + 1);
             rect.get()->w  = tile_w;
             rect.get()->h  = tile_h;
             m_map_clips.push_back(rect);
@@ -120,7 +125,7 @@ void ClippedMap::createClips()
     }
 
     Logger.logMessage(LOG_DEBUG, LOG_MAP, "ClippedMap::createClips: Created %d clips\n",
-                      m_map_clips.size());
+            m_map_clips.size());
     Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::createClips end\n");
 }
 
