@@ -60,6 +60,16 @@ class Player : public GameObject
 
         virtual void addAnimationSequenceFromSprite(MovingState state, MovingStateSequence seq);
 
+        const uint getPositionX() const
+        {
+            return m_position_x;
+        }
+
+        const uint getPositionY() const
+        {
+            return m_position_y;
+        }
+
     private:
         void createClipsFromSprite();
         void createGraphicsObjects();

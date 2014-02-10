@@ -68,6 +68,18 @@ class GraphicsCore
                                SDL_Rect *clip);
         void renderTextureClip(SDL_Texture *tex, SDL_Rect *clip, SDL_Rect *dst);
 
+        void updateViewportRelativeTo(uint x, uint y);
+
+        inline const int getViewportXOffset() const
+        {
+            return m_viewport_x_offset;
+        }
+
+        inline const int getViewportYOffset() const
+        {
+            return m_viewport_y_offset;
+        }
+
     private:
         GraphicsCore();
         virtual ~GraphicsCore();
@@ -77,6 +89,9 @@ class GraphicsCore
 
         SDL_Window      *m_main_window;
         SDL_Renderer    *m_renderer;
+
+        uint            m_viewport_x_offset;
+        uint            m_viewport_y_offset;
 
         DISABLECOPY(GraphicsCore);
 };

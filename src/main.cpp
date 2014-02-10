@@ -63,10 +63,10 @@ int main(int argc, char* argv[])
     UNUSED(handler);
 
     shared_ptr<ClippedMap> clipped(new ClippedMap(&lmap));
-    clipped.get()->copyTilesToRender(0, -100);
+    clipped.get()->copyTilesToRender(0, 0);
 
     //shared_ptr<Player> player(new Player("../res/player.bmp", 20, 300));
-    shared_ptr<Player> player(new Player("../res/player.bmp", 128, 192, 32, 48, 20, 300));
+    shared_ptr<Player> player(new Player("../res/player.bmp", 128, 192, 32, 48, 80, 300));
 
     handler.addGameObject(clipped);
     handler.addGameObject(player);
@@ -145,6 +145,7 @@ int main(int argc, char* argv[])
         }
 
         handler.updateAll();
+        gcore.updateViewportRelativeTo(player->getPositionX(), player->getPositionY());
         handler.drawAll();
         gcore.presentRenderer();
 

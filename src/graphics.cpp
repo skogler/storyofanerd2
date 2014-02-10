@@ -26,6 +26,9 @@
 
 #include "graphics.h"
 
+#define WINDOW_WIDTH    480
+#define WINDOW_HEIGHT   240
+
 ///////////////////////////////////////////////////////////////////////////
 
 GraphicsCore::GraphicsCore() :
@@ -61,7 +64,7 @@ ErrorCode GraphicsCore::initializeWindow()
         return ERROR_SDL_INIT;
     }
 
-    m_main_window = SDL_CreateWindow("TEST", 100, 100, 640, 480,
+    m_main_window = SDL_CreateWindow("TEST", 100, 100, WINDOW_WIDTH, WINDOW_HEIGHT,
                                      SDL_WINDOW_SHOWN);
 
     if(m_main_window == nullptr)
@@ -98,6 +101,7 @@ ErrorCode GraphicsCore::initializeRenderer()
 
     Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
                      "GraphicsCore::initializeRenderer end\n");
+
     return OK;
 }
 
@@ -172,8 +176,8 @@ void GraphicsCore::renderTextureClip(SDL_Texture *tex, int x, int y, SDL_Rect *c
 
     SDL_Rect dst;
 
-    dst.x   = x;
-    dst.y   = y;
+    dst.x   = x - getViewportXOffset() + 25;
+    dst.y   = y - getViewportYOffset() + 25;
 
     dst.w   = clip->w;
     dst.h   = clip->h;
@@ -189,13 +193,21 @@ void GraphicsCore::renderTextureClip(SDL_Texture *tex, SDL_Rect *clip, SDL_Rect 
     assert(clip);
     assert(dst);
 
-    SDL_RenderCopy(m_renderer, tex, clip, dst);
+    SDL_Rect dst_offset;
+    dst_offset.x = dst->x - getViewportXOffset() + 25;
+    dst_offset.y = dst->y - getViewportYOffset() + 25;
+
+    dst_offset.w = dst->w;
+    dst_offset.h = dst->h;
+
+    SDL_RenderCopy(m_renderer, tex, clip, &dst_offset);
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void GraphicsCore::clearRenderer()
 {
+    SDL_SetRenderTarget(m_renderer, NULL);
     SDL_RenderClear(m_renderer);
 }
 
@@ -251,6 +263,14 @@ void GraphicsCore::renderTextureDstOnly(SDL_Texture *tex, SDL_Rect *dst)
     }
 
     SDL_RenderCopy(m_renderer, tex, NULL, dst);
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GraphicsCore::updateViewportRelativeTo(uint x, uint y)
+{
+    m_viewport_x_offset = x - (WINDOW_WIDTH/2);
+    m_viewport_y_offset = y - (WINDOW_HEIGHT/2);
 }
 
 ///////////////////////////////////////////////////////////////////////////
