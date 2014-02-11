@@ -41,6 +41,7 @@ ClippedMap::ClippedMap(LoadedMap *lmap) :
     loadTexture();
     createClips();
     parseTileData();
+    createMapBorder();
 
     Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::ClippedMap end\n");
 }
@@ -96,6 +97,16 @@ void ClippedMap::copyTilesToRender(int viewport_x, int viewport_y)
     }
 
     Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::copyTilesToRender end\n");
+}
+///////////////////////////////////////////////////////////////////////////
+
+void ClippedMap::copyMapBorderToRender()
+{
+    for(auto it = m_map_borders.begin(); it != m_map_borders.end(); it++)
+    {
+        shared_ptr<GraphicsObject> gobj(new GraphicsObject(*it));
+        addGraphicsObject(gobj);
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -170,6 +181,40 @@ void ClippedMap::parseTileData()
     }
 
     Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::parseTileData end\n");
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void ClippedMap::createMapBorder()
+{
+    shared_ptr<SDL_Rect> border_top(new SDL_Rect());
+    border_top->x = 0;
+    border_top->y = 0;
+    border_top->w = m_loaded_map->getTileMap().width * m_loaded_map->getTileMap().tilewidth;
+    border_top->h = 5;
+
+    shared_ptr<SDL_Rect> border_left(new SDL_Rect());
+    border_left->x = 0;
+    border_left->y = 0;
+    border_left->w = 5;
+    border_left->h = m_loaded_map->getTileMap().height * m_loaded_map->getTileMap().tileheight;
+
+    shared_ptr<SDL_Rect> border_right(new SDL_Rect());
+    border_right->x = m_loaded_map->getTileMap().width * m_loaded_map->getTileMap().tilewidth;
+    border_right->y = 0;
+    border_right->w = 5;
+    border_right->h = m_loaded_map->getTileMap().height * m_loaded_map->getTileMap().tileheight;
+
+    shared_ptr<SDL_Rect> border_bottom(new SDL_Rect());
+    border_bottom->x = 0;
+    border_bottom->y = m_loaded_map->getTileMap().height * m_loaded_map->getTileMap().tileheight;
+    border_bottom->w = m_loaded_map->getTileMap().width * m_loaded_map->getTileMap().tilewidth;
+    border_bottom->h = 5;
+
+    m_map_borders.push_back(border_top);
+    m_map_borders.push_back(border_left);
+    m_map_borders.push_back(border_right);
+    m_map_borders.push_back(border_bottom);
 }
 
 ///////////////////////////////////////////////////////////////////////////

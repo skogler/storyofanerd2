@@ -67,6 +67,7 @@ class GraphicsCore
         void renderTextureClip(SDL_Texture *tex, int x, int y,
                                SDL_Rect *clip);
         void renderTextureClip(SDL_Texture *tex, SDL_Rect *clip, SDL_Rect *dst);
+        void renderRectange(SDL_Rect *rect);
 
         void updateViewportRelativeTo(uint x, uint y);
 

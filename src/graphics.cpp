@@ -205,6 +205,22 @@ void GraphicsCore::renderTextureClip(SDL_Texture *tex, SDL_Rect *clip, SDL_Rect 
 
 ///////////////////////////////////////////////////////////////////////////
 
+void GraphicsCore::renderRectange(SDL_Rect *rect)
+{
+    assert(rect);
+
+    SDL_Rect rect_offset;
+    rect_offset.x = rect->x - getViewportXOffset() + 25;
+    rect_offset.y = rect->y - getViewportYOffset() + 25;
+
+    rect_offset.w = rect->w;
+    rect_offset.h = rect->h;
+
+    SDL_RenderDrawRect(m_renderer, &rect_offset);
+}
+
+///////////////////////////////////////////////////////////////////////////
+
 void GraphicsCore::clearRenderer()
 {
     SDL_SetRenderTarget(m_renderer, NULL);

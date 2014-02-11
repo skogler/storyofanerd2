@@ -56,6 +56,16 @@ GraphicsObject::GraphicsObject(shared_ptr<SDL_Texture> texture,
 
 ///////////////////////////////////////////////////////////////////////////
 
+GraphicsObject::GraphicsObject(shared_ptr<SDL_Rect> dst_rct) :
+    m_enabled(true),
+    m_texture(NULL),
+    m_clip(NULL),
+    m_dst(dst_rct)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////
+
 GraphicsObject::~GraphicsObject()
 {
     //TODO: cleanup
@@ -70,7 +80,11 @@ void GraphicsObject::drawObject()
         return;
     }
 
-    if(m_clip != NULL)
+    if(m_texture == NULL && m_clip == NULL && m_dst != NULL)
+    {
+        GraphicsCore::instance().renderRectange(m_dst.get());
+    }
+    else if(m_clip != NULL)
     {
         GraphicsCore::instance().renderTextureClip(m_texture.get(), m_clip.get(), m_dst.get());
     }

@@ -44,6 +44,7 @@ class GraphicsObject
         GraphicsObject(shared_ptr<SDL_Texture> texture,
                        shared_ptr<SDL_Rect> clip,
                        shared_ptr<SDL_Rect> dst);
+        GraphicsObject(shared_ptr<SDL_Rect> dst_rct);
 
         void drawObject();
 

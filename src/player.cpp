@@ -110,13 +110,6 @@ void Player::update()
 
     bool has_collision = Scene.checkCollision(*this);
 
-    //TODO: remove and put bounds into GameObject
-    if(m_next_position_x >= 900 || m_next_position_y >= 700 ||
-       m_next_position_x <= 0 || m_next_position_y <= 0)
-    {
-        has_collision = true;
-    }
-
     if(has_collision == true)
     {
         Logger.logMessage(LOG_DEBUG2, LOG_PLAYER, "Player::update: Collided, resetting x/y.\n");

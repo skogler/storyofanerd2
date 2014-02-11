@@ -49,17 +49,20 @@ class ClippedMap : public GameObject
 
 //        virtual void update();
         void copyTilesToRender(int viewport_x, int viewport_y);
+        void copyMapBorderToRender();
 
     private:
         void loadTexture();
         void createClips();
         void parseTileData();
+        void createMapBorder();
 
         LoadedMap *m_loaded_map;
         int m_surface_width;
         int m_surface_height;
 
         vector<shared_ptr<SDL_Rect> > m_map_clips;
+        vector<shared_ptr<SDL_Rect> > m_map_borders;
         vector<int> m_tile_data_parsed;
 
         shared_ptr<SDL_Surface> m_tile_set_surface;
