@@ -1,0 +1,13 @@
+= Logging =
+
+* Logging: Create ENTER_FUNCTIONS / QUIT_FUNCTION macros
+* Only use in public functions
+
+= Other =
+
+* Consider creating typedefs for shared_pointer<XXX>
+* Fix viewport limiting by making map size and WINDOW SIZE dynamic
+
+= Major Reworks =
+
+* Dont use singletons
