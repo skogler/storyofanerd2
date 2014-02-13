@@ -81,6 +81,8 @@ class GraphicsCore
             return m_viewport_y_offset;
         }
 
+        //TODO! currently working here // getter/setter for viewport limit
+
     private:
         GraphicsCore();
         virtual ~GraphicsCore();
@@ -91,8 +93,13 @@ class GraphicsCore
         SDL_Window      *m_main_window;
         SDL_Renderer    *m_renderer;
 
-        uint            m_viewport_x_offset;
-        uint            m_viewport_y_offset;
+        int            m_viewport_x_offset;
+        int            m_viewport_y_offset;
+
+        int            m_viewport_limit_top;
+        int            m_viewport_limit_bottom;
+        int            m_viewport_limit_left;
+        int            m_viewport_limit_right;
 
         DISABLECOPY(GraphicsCore);
 };

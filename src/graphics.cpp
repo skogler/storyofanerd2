@@ -67,6 +67,12 @@ ErrorCode GraphicsCore::initializeWindow()
     m_main_window = SDL_CreateWindow("TEST", 100, 100, WINDOW_WIDTH, WINDOW_HEIGHT,
                                      SDL_WINDOW_SHOWN);
 
+    //TODO: Move these limits somewhere else and make MAP SIZE configurable
+    m_viewport_limit_top    = 0;
+    m_viewport_limit_left   = 0;
+    m_viewport_limit_right  = 2048 - WINDOW_WIDTH;
+    m_viewport_limit_bottom = 1024 - WINDOW_HEIGHT;
+
     if(m_main_window == nullptr)
     {
         Logger.logMessage(LOG_ERROR, LOG_SDL2_GRAPHICS,
@@ -176,8 +182,8 @@ void GraphicsCore::renderTextureClip(SDL_Texture *tex, int x, int y, SDL_Rect *c
 
     SDL_Rect dst;
 
-    dst.x   = x - getViewportXOffset() + 25;
-    dst.y   = y - getViewportYOffset() + 25;
+    dst.x   = x - getViewportXOffset();
+    dst.y   = y - getViewportYOffset();
 
     dst.w   = clip->w;
     dst.h   = clip->h;
@@ -194,8 +200,8 @@ void GraphicsCore::renderTextureClip(SDL_Texture *tex, SDL_Rect *clip, SDL_Rect 
     assert(dst);
 
     SDL_Rect dst_offset;
-    dst_offset.x = dst->x - getViewportXOffset() + 25;
-    dst_offset.y = dst->y - getViewportYOffset() + 25;
+    dst_offset.x = dst->x - getViewportXOffset();
+    dst_offset.y = dst->y - getViewportYOffset();
 
     dst_offset.w = dst->w;
     dst_offset.h = dst->h;
@@ -210,8 +216,8 @@ void GraphicsCore::renderRectange(SDL_Rect *rect)
     assert(rect);
 
     SDL_Rect rect_offset;
-    rect_offset.x = rect->x - getViewportXOffset() + 25;
-    rect_offset.y = rect->y - getViewportYOffset() + 25;
+    rect_offset.x = rect->x - getViewportXOffset();
+    rect_offset.y = rect->y - getViewportYOffset();
 
     rect_offset.w = rect->w;
     rect_offset.h = rect->h;
@@ -287,6 +293,24 @@ void GraphicsCore::updateViewportRelativeTo(uint x, uint y)
 {
     m_viewport_x_offset = x - (WINDOW_WIDTH/2);
     m_viewport_y_offset = y - (WINDOW_HEIGHT/2);
+
+    if(m_viewport_x_offset > m_viewport_limit_right)
+    {
+        m_viewport_x_offset = m_viewport_limit_right;
+    }
+    else if(m_viewport_x_offset < m_viewport_limit_left)
+    {
+        m_viewport_x_offset = m_viewport_limit_left;
+    }
+
+    if(m_viewport_y_offset > m_viewport_limit_bottom)
+    {
+        m_viewport_y_offset = m_viewport_limit_bottom;
+    }
+    else if(m_viewport_y_offset < m_viewport_limit_top)
+    {
+        m_viewport_y_offset = m_viewport_limit_top;
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////
