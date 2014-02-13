@@ -5,22 +5,22 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the 
- * "Software"), to deal in the Software without restriction, including 
- * without limitation the rights to use, copy, modify, merge, publish, 
- * distribute, sublicense, and/or sell copies of the Software, and to 
- * permit persons to whom the Software is furnished to do so, subject to 
+ * copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *-----------------------------------------------------------------------*/
 
@@ -60,7 +60,7 @@ struct MovingStateSequence
 
 class MovingStateSequencer
 {
-    DISABLECOPY(MovingStateSequencer);
+        DISABLECOPY(MovingStateSequencer);
 
     public:
         explicit MovingStateSequencer(MovingState initial_position = INVALID) :
@@ -76,10 +76,12 @@ class MovingStateSequencer
 
         inline void addSequence(MovingState state, MovingStateSequence sequence)
         {
-            m_sequences.insert(std::pair<MovingState, MovingStateSequence>(state, sequence));
+            m_sequences.insert(std::pair<MovingState, MovingStateSequence>(state,
+                               sequence));
         }
 
-        inline const MovingStateSequence& getMovingStateSequence(MovingState state) const
+        inline const MovingStateSequence& getMovingStateSequence(
+            MovingState state) const
         {
             return m_sequences.at(state);
         }
@@ -106,7 +108,8 @@ class MovingStateSequencer
 
         inline int getLastAnimationIndex() const
         {
-            return m_sequences.at(m_previous_state).possible_animations.at(m_sequences.at(m_previous_state).last_animation_index);
+            return m_sequences.at(m_previous_state).possible_animations.at(m_sequences.at(
+                        m_previous_state).last_animation_index);
         }
 
         inline void applyNextState()
@@ -136,8 +139,10 @@ class MovingStateSequencer
             }
             else
             {
-                state_it->second.last_animation_index = state_it->second.last_animation_index + 1;
-                return state_it->second.possible_animations.at(state_it->second.last_animation_index);
+                state_it->second.last_animation_index = state_it->second.last_animation_index +
+                                                        1;
+                return state_it->second.possible_animations.at(
+                           state_it->second.last_animation_index);
             }
         }
 

@@ -5,22 +5,22 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the 
- * "Software"), to deal in the Software without restriction, including 
- * without limitation the rights to use, copy, modify, merge, publish, 
- * distribute, sublicense, and/or sell copies of the Software, and to 
- * permit persons to whom the Software is furnished to do so, subject to 
+ * copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *-----------------------------------------------------------------------*/
 
@@ -41,7 +41,7 @@ using std::dynamic_pointer_cast;
 
 int main(int argc, char* argv[])
 {
-    GameCore &core = GameCore::instance();
+    GameCore& core = GameCore::instance();
     core.logger().setLogLevel(LOG_DEBUG);
     core.logger().addLoggingCategory(LOG_CORE);
     core.logger().addLoggingCategory(LOG_MAP);
@@ -52,14 +52,14 @@ int main(int argc, char* argv[])
     ErrorCode file_loaded = lmap.loadFile();
     UNUSED(file_loaded);
 
-    GraphicsCore &gcore = GraphicsCore::instance();
+    GraphicsCore& gcore = GraphicsCore::instance();
     gcore.initializeWindow();
     gcore.initializeRenderer();
 
-    Objecthandler &handler = Objecthandler::instance();
+    Objecthandler& handler = Objecthandler::instance();
     UNUSED(handler);
 
-    Inputhandler &input = Inputhandler::instance();
+    Inputhandler& input = Inputhandler::instance();
     UNUSED(handler);
 
     shared_ptr<ClippedMap> clipped(new ClippedMap(&lmap));
@@ -67,7 +67,8 @@ int main(int argc, char* argv[])
     clipped.get()->copyMapBorderToRender();
 
     //shared_ptr<Player> player(new Player("../res/player.bmp", 20, 300));
-    shared_ptr<Player> player(new Player("../res/player.bmp", 128, 192, 32, 48, 80, 300));
+    shared_ptr<Player> player(new Player("../res/player.bmp", 128, 192, 32, 48, 80,
+                                         300));
 
     handler.addGameObject(clipped);
     handler.addGameObject(player);
@@ -135,12 +136,14 @@ int main(int argc, char* argv[])
         gcore.clearRenderer();
         SDL_PumpEvents();
         InputEvent event = input.getNextEvent();
+
         while(event != NONE)
         {
             if(event == QUIT)
             {
                 goto stop;
             }
+
             handler.reactToKeyEvent(event);
             event = input.getNextEvent();
         }

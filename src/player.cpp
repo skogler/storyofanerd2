@@ -5,22 +5,22 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the 
- * "Software"), to deal in the Software without restriction, including 
- * without limitation the rights to use, copy, modify, merge, publish, 
- * distribute, sublicense, and/or sell copies of the Software, and to 
- * permit persons to whom the Software is furnished to do so, subject to 
+ * copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *-----------------------------------------------------------------------*/
 
@@ -33,7 +33,7 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-Player::Player(const string &bmpfile, uint position_x, uint position_y) :
+Player::Player(const string& bmpfile, uint position_x, uint position_y) :
     GameObject("Player"),
     m_position_x(position_x),
     m_position_y(position_y),
@@ -42,10 +42,12 @@ Player::Player(const string &bmpfile, uint position_x, uint position_y) :
 {
     Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::Player start\n");
 
-    shared_ptr<SDL_Texture> texture(GraphicsCore::instance().createTextureFromBMP(bmpfile),
+    shared_ptr<SDL_Texture> texture(GraphicsCore::instance().createTextureFromBMP(
+                                        bmpfile),
                                     SDL_DestroyTexture);
 
-    shared_ptr<GraphicsObject> playergraphics(new GraphicsObject(texture, m_position_x, m_position_y));
+    shared_ptr<GraphicsObject> playergraphics(new GraphicsObject(texture,
+            m_position_x, m_position_y));
 
     this->addGraphicsObject(playergraphics);
 
@@ -54,7 +56,7 @@ Player::Player(const string &bmpfile, uint position_x, uint position_y) :
 
 ///////////////////////////////////////////////////////////////////////////
 
-Player::Player(const string &sprite,
+Player::Player(const string& sprite,
                uint sprite_x, uint sprite_y,
                uint clip_x, uint clip_y,
                uint position_x, uint position_y) :
@@ -69,10 +71,11 @@ Player::Player(const string &sprite,
 {
     //TODO:fix
     //SDL_Surface *sprite_surface = IMG_Load(("../res/maps/" + sprite.c_str());
-    SDL_Surface *sprite_surface = IMG_Load("../res/jael.png");
+    SDL_Surface* sprite_surface = IMG_Load("../res/jael.png");
     assert(sprite_surface);
 
-    SDL_Texture *sprite_texture = SDL_CreateTextureFromSurface(&(GraphicsCore::instance().getRenderer()), sprite_surface);
+    SDL_Texture* sprite_texture = SDL_CreateTextureFromSurface(&
+                                  (GraphicsCore::instance().getRenderer()), sprite_surface);
     assert(sprite_texture);
 
     m_sprite_surface.reset(sprite_surface, SDL_FreeSurface);
@@ -112,7 +115,8 @@ void Player::update()
 
     if(has_collision == true)
     {
-        Logger.logMessage(LOG_DEBUG2, LOG_PLAYER, "Player::update: Collided, resetting x/y.\n");
+        Logger.logMessage(LOG_DEBUG2, LOG_PLAYER,
+                          "Player::update: Collided, resetting x/y.\n");
 
         //Don't update, reset position
         m_graphics_objects.at(draw_index).get()->setX(m_position_x);
@@ -123,7 +127,8 @@ void Player::update()
     }
     else
     {
-        Logger.logMessage(LOG_DEBUG2, LOG_PLAYER, "Player::update: Did not collide with anything!\n");
+        Logger.logMessage(LOG_DEBUG2, LOG_PLAYER,
+                          "Player::update: Did not collide with anything!\n");
         m_position_x = m_next_position_x;
         m_position_y = m_next_position_y;
     }
@@ -133,7 +138,7 @@ void Player::update()
 
 ///////////////////////////////////////////////////////////////////////////
 
-bool Player::handleKeyEvent(const InputEvent &event)
+bool Player::handleKeyEvent(const InputEvent& event)
 {
     Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::handleKeyEvent start\n");
 
@@ -145,18 +150,22 @@ bool Player::handleKeyEvent(const InputEvent &event)
             m_next_position_x = m_next_position_x + MOVING_STEP;
             m_sequencer.setNextState(MOVE_RIGHT);
             return true;
+
         case PLAYER_LEFT:
             m_next_position_x = m_next_position_x - MOVING_STEP;
             m_sequencer.setNextState(MOVE_LEFT);
             return true;
+
         case PLAYER_DOWN:
             m_next_position_y = m_next_position_y + MOVING_STEP;
             m_sequencer.setNextState(MOVE_FRONT);
             return true;
+
         case PLAYER_UP:
             m_next_position_y = m_next_position_y - MOVING_STEP;
             m_sequencer.setNextState(MOVE_BACK);
             return true;
+
         default:
             break;
     }
@@ -167,7 +176,8 @@ bool Player::handleKeyEvent(const InputEvent &event)
 
 ///////////////////////////////////////////////////////////////////////////
 
-void Player::addAnimationSequenceFromSprite(MovingState state, MovingStateSequence seq)
+void Player::addAnimationSequenceFromSprite(MovingState state,
+        MovingStateSequence seq)
 {
     m_sequencer.addSequence(state, seq);
 }
@@ -192,7 +202,8 @@ void Player::createClipsFromSprite()
         }
     }
 
-    Logger.logMessage(LOG_DEBUG, LOG_PLAYER, "Player::createClipsFromSprite: Created %d clips\n",
+    Logger.logMessage(LOG_DEBUG, LOG_PLAYER,
+                      "Player::createClipsFromSprite: Created %d clips\n",
                       m_player_clips.size());
 }
 
@@ -208,7 +219,7 @@ void Player::createGraphicsObjects()
         dst.get()->w = m_clip_x;
         dst.get()->h = m_clip_y;
         shared_ptr<GraphicsObject> playergraphics(new GraphicsObject(m_sprite_texture,
-                                                                     m_player_clips.at(i), dst));
+                m_player_clips.at(i), dst));
         playergraphics.get()->setEnabled(false);
         this->addGraphicsObject(playergraphics);
     }

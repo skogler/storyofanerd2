@@ -5,22 +5,22 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the 
- * "Software"), to deal in the Software without restriction, including 
- * without limitation the rights to use, copy, modify, merge, publish, 
- * distribute, sublicense, and/or sell copies of the Software, and to 
- * permit persons to whom the Software is furnished to do so, subject to 
+ * copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *-----------------------------------------------------------------------*/
 
@@ -52,7 +52,7 @@ GraphicsCore::~GraphicsCore()
 ErrorCode GraphicsCore::initializeWindow()
 {
     Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
-                     "GraphicsCore::initializeWindow start\n");
+                      "GraphicsCore::initializeWindow start\n");
 
     assert(m_main_window == NULL);
 
@@ -81,7 +81,7 @@ ErrorCode GraphicsCore::initializeWindow()
     }
 
     Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
-                     "GraphicsCore::initializeWindow end\n");
+                      "GraphicsCore::initializeWindow end\n");
     return OK;
 }
 
@@ -90,7 +90,7 @@ ErrorCode GraphicsCore::initializeWindow()
 ErrorCode GraphicsCore::initializeRenderer()
 {
     Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
-                     "GraphicsCore::initializeRenderer start\n");
+                      "GraphicsCore::initializeRenderer start\n");
 
     assert(m_renderer == NULL);
 
@@ -106,7 +106,7 @@ ErrorCode GraphicsCore::initializeRenderer()
     }
 
     Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
-                     "GraphicsCore::initializeRenderer end\n");
+                      "GraphicsCore::initializeRenderer end\n");
 
     return OK;
 }
@@ -116,7 +116,7 @@ ErrorCode GraphicsCore::initializeRenderer()
 void GraphicsCore::destroyWindow()
 {
     Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
-                     "GraphicsCore::destroyWindow start\n");
+                      "GraphicsCore::destroyWindow start\n");
 
     if(m_main_window != NULL)
     {
@@ -124,7 +124,7 @@ void GraphicsCore::destroyWindow()
     }
 
     Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
-                     "GraphicsCore::destroyWindow end\n");
+                      "GraphicsCore::destroyWindow end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -132,7 +132,7 @@ void GraphicsCore::destroyWindow()
 void GraphicsCore::destroyRenderer()
 {
     Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
-                     "GraphicsCore::destroyRenderer start\n");
+                      "GraphicsCore::destroyRenderer start\n");
 
     if(m_renderer != NULL)
     {
@@ -140,14 +140,14 @@ void GraphicsCore::destroyRenderer()
     }
 
     Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
-                     "GraphicsCore::destroyRenderer end\n");
+                      "GraphicsCore::destroyRenderer end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 SDL_Texture* GraphicsCore::createTextureFromBMP(const string& filename)
 {
-    SDL_Surface *bmp = SDL_LoadBMP(filename.c_str());
+    SDL_Surface* bmp = SDL_LoadBMP(filename.c_str());
 
     if(bmp == nullptr)
     {
@@ -157,8 +157,8 @@ SDL_Texture* GraphicsCore::createTextureFromBMP(const string& filename)
         return NULL;
     }
 
-    SDL_Texture *tex = SDL_CreateTextureFromSurface(m_renderer,
-                                                    bmp);
+    SDL_Texture* tex = SDL_CreateTextureFromSurface(m_renderer,
+                       bmp);
 
     SDL_FreeSurface(bmp);
 
@@ -175,7 +175,8 @@ SDL_Texture* GraphicsCore::createTextureFromBMP(const string& filename)
 
 ///////////////////////////////////////////////////////////////////////////
 
-void GraphicsCore::renderTextureClip(SDL_Texture *tex, int x, int y, SDL_Rect *clip)
+void GraphicsCore::renderTextureClip(SDL_Texture* tex, int x, int y,
+                                     SDL_Rect* clip)
 {
     assert(tex);
     assert(clip);
@@ -193,7 +194,8 @@ void GraphicsCore::renderTextureClip(SDL_Texture *tex, int x, int y, SDL_Rect *c
 
 ///////////////////////////////////////////////////////////////////////////
 
-void GraphicsCore::renderTextureClip(SDL_Texture *tex, SDL_Rect *clip, SDL_Rect *dst)
+void GraphicsCore::renderTextureClip(SDL_Texture* tex, SDL_Rect* clip,
+                                     SDL_Rect* dst)
 {
     assert(tex);
     assert(clip);
@@ -211,7 +213,7 @@ void GraphicsCore::renderTextureClip(SDL_Texture *tex, SDL_Rect *clip, SDL_Rect 
 
 ///////////////////////////////////////////////////////////////////////////
 
-void GraphicsCore::renderRectange(SDL_Rect *rect)
+void GraphicsCore::renderRectange(SDL_Rect* rect)
 {
     assert(rect);
 
@@ -242,7 +244,7 @@ void GraphicsCore::presentRenderer()
 
 ///////////////////////////////////////////////////////////////////////////
 
-void GraphicsCore::renderTexture(SDL_Texture *tex, int x, int y,
+void GraphicsCore::renderTexture(SDL_Texture* tex, int x, int y,
                                  uint h, uint w)
 {
     assert(tex);
@@ -266,6 +268,7 @@ void GraphicsCore::renderTexture(SDL_Texture *tex, int x, int y,
                               "One of the texture scaling values has been "
                               "set to 0. Ignoring set values...\n");
         }
+
         SDL_QueryTexture(tex, NULL, NULL, &dst.w, &dst.h);
     }
 
@@ -274,7 +277,7 @@ void GraphicsCore::renderTexture(SDL_Texture *tex, int x, int y,
 
 ///////////////////////////////////////////////////////////////////////////
 
-void GraphicsCore::renderTextureDstOnly(SDL_Texture *tex, SDL_Rect *dst)
+void GraphicsCore::renderTextureDstOnly(SDL_Texture* tex, SDL_Rect* dst)
 {
     assert(tex);
     assert(dst);
@@ -291,8 +294,8 @@ void GraphicsCore::renderTextureDstOnly(SDL_Texture *tex, SDL_Rect *dst)
 
 void GraphicsCore::updateViewportRelativeTo(uint x, uint y)
 {
-    m_viewport_x_offset = x - (WINDOW_WIDTH/2);
-    m_viewport_y_offset = y - (WINDOW_HEIGHT/2);
+    m_viewport_x_offset = x - (WINDOW_WIDTH / 2);
+    m_viewport_y_offset = y - (WINDOW_HEIGHT / 2);
 
     if(m_viewport_x_offset > m_viewport_limit_right)
     {

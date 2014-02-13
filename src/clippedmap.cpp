@@ -5,22 +5,22 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the 
- * "Software"), to deal in the Software without restriction, including 
- * without limitation the rights to use, copy, modify, merge, publish, 
- * distribute, sublicense, and/or sell copies of the Software, and to 
- * permit persons to whom the Software is furnished to do so, subject to 
+ * copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *-----------------------------------------------------------------------*/
 
@@ -30,7 +30,7 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-ClippedMap::ClippedMap(LoadedMap *lmap) :
+ClippedMap::ClippedMap(LoadedMap* lmap) :
     GameObject("map"),
     m_loaded_map(lmap),
     m_tile_set_surface(NULL),
@@ -89,7 +89,9 @@ void ClippedMap::copyTilesToRender(int viewport_x, int viewport_y)
         }
 
         x_coord = x_coord + m_loaded_map->getTileMap().tilewidth;
-        if(x_coord >= m_loaded_map->getTileMap().width * m_loaded_map->getTileMap().tilewidth)
+
+        if(x_coord >= m_loaded_map->getTileMap().width *
+           m_loaded_map->getTileMap().tilewidth)
         {
             x_coord = 0;
             y_coord = y_coord + m_loaded_map->getTileMap().tileheight;
@@ -135,8 +137,9 @@ void ClippedMap::createClips()
         }
     }
 
-    Logger.logMessage(LOG_DEBUG, LOG_MAP, "ClippedMap::createClips: Created %d clips\n",
-            m_map_clips.size());
+    Logger.logMessage(LOG_DEBUG, LOG_MAP,
+                      "ClippedMap::createClips: Created %d clips\n",
+                      m_map_clips.size());
     Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::createClips end\n");
 }
 
@@ -146,10 +149,12 @@ void ClippedMap::loadTexture()
 {
     Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::loadTexture start\n");
 
-    SDL_Surface *tile_set_surface = IMG_Load(("../res/maps/" + m_loaded_map->getImageName(0)).c_str());
+    SDL_Surface* tile_set_surface = IMG_Load(("../res/maps/" +
+                                    m_loaded_map->getImageName(0)).c_str());
     assert(tile_set_surface);
 
-    SDL_Texture *tile_set = SDL_CreateTextureFromSurface(&(GraphicsCore::instance().getRenderer()), tile_set_surface);
+    SDL_Texture* tile_set = SDL_CreateTextureFromSurface(&
+                            (GraphicsCore::instance().getRenderer()), tile_set_surface);
     assert(tile_set);
 
     m_tile_set_surface.reset(tile_set_surface, SDL_FreeSurface);
@@ -171,9 +176,11 @@ void ClippedMap::parseTileData()
 
     std::stringstream ss(tile_data);
     int vec_index;
+
     while(ss >> vec_index)
     {
         m_tile_data_parsed.push_back(vec_index);
+
         if(ss.peek() == ',')
         {
             ss.ignore();
@@ -190,25 +197,31 @@ void ClippedMap::createMapBorder()
     shared_ptr<SDL_Rect> border_top(new SDL_Rect());
     border_top->x = 0;
     border_top->y = 0;
-    border_top->w = m_loaded_map->getTileMap().width * m_loaded_map->getTileMap().tilewidth;
+    border_top->w = m_loaded_map->getTileMap().width *
+                    m_loaded_map->getTileMap().tilewidth;
     border_top->h = 5;
 
     shared_ptr<SDL_Rect> border_left(new SDL_Rect());
     border_left->x = 0;
     border_left->y = 0;
     border_left->w = 5;
-    border_left->h = m_loaded_map->getTileMap().height * m_loaded_map->getTileMap().tileheight;
+    border_left->h = m_loaded_map->getTileMap().height *
+                     m_loaded_map->getTileMap().tileheight;
 
     shared_ptr<SDL_Rect> border_right(new SDL_Rect());
-    border_right->x = m_loaded_map->getTileMap().width * m_loaded_map->getTileMap().tilewidth;
+    border_right->x = m_loaded_map->getTileMap().width *
+                      m_loaded_map->getTileMap().tilewidth;
     border_right->y = 0;
     border_right->w = 5;
-    border_right->h = m_loaded_map->getTileMap().height * m_loaded_map->getTileMap().tileheight;
+    border_right->h = m_loaded_map->getTileMap().height *
+                      m_loaded_map->getTileMap().tileheight;
 
     shared_ptr<SDL_Rect> border_bottom(new SDL_Rect());
     border_bottom->x = 0;
-    border_bottom->y = m_loaded_map->getTileMap().height * m_loaded_map->getTileMap().tileheight;
-    border_bottom->w = m_loaded_map->getTileMap().width * m_loaded_map->getTileMap().tilewidth;
+    border_bottom->y = m_loaded_map->getTileMap().height *
+                       m_loaded_map->getTileMap().tileheight;
+    border_bottom->w = m_loaded_map->getTileMap().width *
+                       m_loaded_map->getTileMap().tilewidth;
     border_bottom->h = 5;
 
     m_map_borders.push_back(border_top);

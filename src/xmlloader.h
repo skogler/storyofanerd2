@@ -5,22 +5,22 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the 
- * "Software"), to deal in the Software without restriction, including 
- * without limitation the rights to use, copy, modify, merge, publish, 
- * distribute, sublicense, and/or sell copies of the Software, and to 
- * permit persons to whom the Software is furnished to do so, subject to 
+ * copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *-----------------------------------------------------------------------*/
 
@@ -148,7 +148,7 @@ struct Object
 class LoadedMap
 {
     public:
-        explicit LoadedMap(const string &filename);
+        explicit LoadedMap(const string& filename);
         ~LoadedMap();
 
         //! actually load/parse the file
@@ -203,19 +203,19 @@ class LoadedMap
         }
 
     private:
-        void loadMap(XMLElement *element);
-        void loadTileset(XMLElement *element);
-        void loadImageSource(XMLElement *element, TileSet *target);
-        void loadTerrains(XMLElement *element, TileSet *target);
-        void loadTerrainProperties(XMLElement *element, TerrainType *target);
-        void loadTiles(XMLElement *element, TileSet *target);
-        void mapTilesToTerrainPointers(string parsed, TileSet *tset, Tile *target);
-        void loadLayer(XMLElement *element);
-        void loadObjectGroup(XMLElement *element);
-        void loadObjectGroupProperties(XMLElement *element, ObjectGroup *target);
-        void loadObjects(XMLElement *element, ObjectGroup *target);
+        void loadMap(XMLElement* element);
+        void loadTileset(XMLElement* element);
+        void loadImageSource(XMLElement* element, TileSet* target);
+        void loadTerrains(XMLElement* element, TileSet* target);
+        void loadTerrainProperties(XMLElement* element, TerrainType* target);
+        void loadTiles(XMLElement* element, TileSet* target);
+        void mapTilesToTerrainPointers(string parsed, TileSet* tset, Tile* target);
+        void loadLayer(XMLElement* element);
+        void loadObjectGroup(XMLElement* element);
+        void loadObjectGroupProperties(XMLElement* element, ObjectGroup* target);
+        void loadObjects(XMLElement* element, ObjectGroup* target);
 
-        string getAttributeString(XMLElement *element, const string &attribute_name);
+        string getAttributeString(XMLElement* element, const string& attribute_name);
 
         void printMapInformation();
 
