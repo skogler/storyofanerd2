@@ -32,9 +32,9 @@
 #include <map>
 
 #include "common.h"
-#include "core.h"
-#include "gameobject.h"
 #include "states.h"
+#include "inputevents.h"
+#include "gameobject.h"
 
 using std::map;
 

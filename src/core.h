@@ -27,19 +27,15 @@
 #ifndef CORE_H
 #define CORE_H
 
-#include <memory>
-
 #include "common.h"
-#include "errorcodes.h"
-
 #include "logging.h"
-
-using std::shared_ptr;
 
 ///////////////////////////////////////////////////////////////////////////
 
 class GameCore
 {
+    DISABLECOPY(GameCore);
+
     public:
         static GameCore& instance()
         {
@@ -53,25 +49,15 @@ class GameCore
         }
 
     private:
-        GameCore()
-        {
-            m_default_logger = new Logger(LOG_INFO);
-            assert(m_default_logger);
-        };
-        ~GameCore()
-        {
-            delete m_default_logger;
-        };
+        explicit GameCore();
+        virtual ~GameCore();
 
         Logger* m_default_logger;
-
-        DISABLECOPY(GameCore);
-
 };
 
 ///////////////////////////////////////////////////////////////////////////
 
-#define Logger GameCore::instance().logger()
+#define Log GameCore::instance().logger()
 
 ///////////////////////////////////////////////////////////////////////////
 

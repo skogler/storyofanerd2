@@ -27,6 +27,8 @@
 #include <SDL2/SDL_image.h>
 
 #include "player.h"
+#include "core.h"
+#include "graphics.h"
 #include "objecthandler.h"
 
 #define MOVING_STEP 5
@@ -40,7 +42,7 @@ Player::Player(const string& bmpfile, uint position_x, uint position_y) :
     m_next_position_x(position_x),
     m_next_position_y(position_y)
 {
-    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::Player start\n");
+    Log.logMessage(LOG_STATE, LOG_PLAYER, "Player::Player start\n");
 
     shared_ptr<SDL_Texture> texture(GraphicsCore::instance().createTextureFromBMP(
                                         bmpfile),
@@ -51,7 +53,7 @@ Player::Player(const string& bmpfile, uint position_x, uint position_y) :
 
     this->addGraphicsObject(playergraphics);
 
-    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::Player end\n");
+    Log.logMessage(LOG_STATE, LOG_PLAYER, "Player::Player end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -89,14 +91,14 @@ Player::Player(const string& sprite,
 
 Player::~Player()
 {
-    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::~Player\n");
+    Log.logMessage(LOG_STATE, LOG_PLAYER, "Player::~Player\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void Player::update()
 {
-    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::update start\n");
+    Log.logMessage(LOG_STATE, LOG_PLAYER, "Player::update start\n");
 
     m_sequencer.applyNextState();
 
@@ -115,7 +117,7 @@ void Player::update()
 
     if(has_collision == true)
     {
-        Logger.logMessage(LOG_DEBUG2, LOG_PLAYER,
+        Log.logMessage(LOG_DEBUG2, LOG_PLAYER,
                           "Player::update: Collided, resetting x/y.\n");
 
         //Don't update, reset position
@@ -127,20 +129,20 @@ void Player::update()
     }
     else
     {
-        Logger.logMessage(LOG_DEBUG2, LOG_PLAYER,
+        Log.logMessage(LOG_DEBUG2, LOG_PLAYER,
                           "Player::update: Did not collide with anything!\n");
         m_position_x = m_next_position_x;
         m_position_y = m_next_position_y;
     }
 
-    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::update end\n");
+    Log.logMessage(LOG_STATE, LOG_PLAYER, "Player::update end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 bool Player::handleKeyEvent(const InputEvent& event)
 {
-    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::handleKeyEvent start\n");
+    Log.logMessage(LOG_STATE, LOG_PLAYER, "Player::handleKeyEvent start\n");
 
     assert(event);
 
@@ -170,7 +172,7 @@ bool Player::handleKeyEvent(const InputEvent& event)
             break;
     }
 
-    Logger.logMessage(LOG_STATE, LOG_PLAYER, "Player::handleKeyEvent end\n");
+    Log.logMessage(LOG_STATE, LOG_PLAYER, "Player::handleKeyEvent end\n");
     return false;
 }
 
@@ -202,7 +204,7 @@ void Player::createClipsFromSprite()
         }
     }
 
-    Logger.logMessage(LOG_DEBUG, LOG_PLAYER,
+    Log.logMessage(LOG_DEBUG, LOG_PLAYER,
                       "Player::createClipsFromSprite: Created %d clips\n",
                       m_player_clips.size());
 }

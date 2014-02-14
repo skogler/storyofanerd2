@@ -27,7 +27,9 @@
 #ifndef ERRORCODES_H
 #define ERRORCODES_H
 
-#include "common.h"
+#include <string>
+
+using std::string;
 
 enum ErrorCode : unsigned int
 {

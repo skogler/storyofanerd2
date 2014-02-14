@@ -28,8 +28,12 @@
 #define STATES_H
 
 #include <map>
+#include <vector>
+
+#include "common.h"
 
 using std::map;
+using std::vector;
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -60,29 +64,14 @@ struct MovingStateSequence
 
 class MovingStateSequencer
 {
-        DISABLECOPY(MovingStateSequencer);
+    DISABLECOPY(MovingStateSequencer);
 
     public:
         explicit MovingStateSequencer(MovingState initial_position = INVALID,
-                                      uint update_rate = 3) :
-            m_previous_state(initial_position),
-            m_current_state(initial_position),
-            m_next_state(initial_position),
-            m_update_rate(update_rate),
-            m_update_rate_counter(0),
-            m_draw_next_animation(false)
-        {
-        }
+                                      uint update_rate = 3);
+        virtual ~MovingStateSequencer();
 
-        virtual ~MovingStateSequencer()
-        {
-        };
-
-        inline void addSequence(MovingState state, MovingStateSequence sequence)
-        {
-            m_sequences.insert(std::pair<MovingState, MovingStateSequence>(state,
-                               sequence));
-        }
+        void addSequence(MovingState state, MovingStateSequence sequence);
 
         inline const MovingStateSequence& getMovingStateSequence(
             MovingState state) const
@@ -110,73 +99,15 @@ class MovingStateSequencer
             m_next_state = next;
         }
 
-        inline int getLastAnimationIndex() const
-        {
-            return m_sequences.at(m_previous_state).possible_animations.at(m_sequences.at(
-                        m_previous_state).last_animation_index);
-        }
+        int getLastAnimationIndex() const;
 
-        inline bool doCheckUpdate()
-        {
-            m_update_rate_counter = m_update_rate_counter + 1;
+        void applyNextState();
 
-            if(m_update_rate_counter == m_update_rate)
-            {
-                m_update_rate_counter   = 0;
-                m_draw_next_animation   = true;
-                return true;
-            }
-
-            m_draw_next_animation = false;
-            return false;
-        }
-
-        inline void applyNextState()
-        {
-            doCheckUpdate();
-            if(m_draw_next_animation == false)
-            {
-                return;
-            }
-
-            m_previous_state    = m_current_state;
-
-            if(m_next_state == INVALID)
-            {
-                m_current_state = m_sequences.find(m_previous_state)->second.revert_to;
-            }
-            else
-            {
-                m_current_state     = m_next_state;
-                m_next_state        = INVALID;
-            }
-        }
-
-        inline int updateCurrentAnimationIndex()
-        {
-            auto state_it = m_sequences.find(m_current_state);
-
-            if(m_draw_next_animation == false)
-            {
-                return state_it->second.possible_animations.at(state_it->second.last_animation_index);
-            }
-
-            if(state_it->second.last_animation_index + 1 ==
-               state_it->second.possible_animations.size())
-            {
-                state_it->second.last_animation_index = 0;
-                return state_it->second.possible_animations.at(0);
-            }
-            else
-            {
-                state_it->second.last_animation_index = state_it->second.last_animation_index +
-                                                        1;
-                return state_it->second.possible_animations.at(
-                           state_it->second.last_animation_index);
-            }
-        }
+        int updateCurrentAnimationIndex();
 
     private:
+        bool doCheckUpdate();
+
         map<MovingState, MovingStateSequence> m_sequences;
 
         MovingState     m_previous_state;

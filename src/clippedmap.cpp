@@ -25,8 +25,13 @@
  *-----------------------------------------------------------------------*/
 
 #include "clippedmap.h"
+
 #include <SDL2/SDL_image.h>
 #include <sstream>
+
+#include "core.h"
+#include "graphics.h"
+#include "xmlloader.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -36,28 +41,28 @@ ClippedMap::ClippedMap(LoadedMap* lmap) :
     m_tile_set_surface(NULL),
     m_tile_set(NULL)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::ClippedMap start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::ClippedMap start\n");
 
     loadTexture();
     createClips();
     parseTileData();
     createMapBorder();
 
-    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::ClippedMap end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::ClippedMap end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 ClippedMap::~ClippedMap()
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::~ClippedMap\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::~ClippedMap\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void ClippedMap::copyTilesToRender(int viewport_x, int viewport_y)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::copyTilesToRender start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::copyTilesToRender start\n");
 
     //TODO: remove viewport variables
     UNUSED(viewport_x);
@@ -98,7 +103,7 @@ void ClippedMap::copyTilesToRender(int viewport_x, int viewport_y)
         }
     }
 
-    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::copyTilesToRender end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::copyTilesToRender end\n");
 }
 ///////////////////////////////////////////////////////////////////////////
 
@@ -115,7 +120,7 @@ void ClippedMap::copyMapBorderToRender()
 
 void ClippedMap::createClips()
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::createClips start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::createClips start\n");
 
     int tile_w  = m_loaded_map->getTileMap().tilewidth;
     int tile_h  = m_loaded_map->getTileMap().tileheight;
@@ -137,17 +142,17 @@ void ClippedMap::createClips()
         }
     }
 
-    Logger.logMessage(LOG_DEBUG, LOG_MAP,
+    Log.logMessage(LOG_DEBUG, LOG_MAP,
                       "ClippedMap::createClips: Created %d clips\n",
                       m_map_clips.size());
-    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::createClips end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::createClips end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void ClippedMap::loadTexture()
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::loadTexture start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::loadTexture start\n");
 
     SDL_Surface* tile_set_surface = IMG_Load(("../res/maps/" +
                                     m_loaded_map->getImageName(0)).c_str());
@@ -163,14 +168,14 @@ void ClippedMap::loadTexture()
     m_surface_width = m_tile_set_surface->w;
     m_surface_height = m_tile_set_surface->h;
 
-    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::loadTexture end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::loadTexture end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void ClippedMap::parseTileData()
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::parseTileData start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::parseTileData start\n");
 
     string tile_data    = m_loaded_map->getLayerData(0);
 
@@ -187,7 +192,7 @@ void ClippedMap::parseTileData()
         }
     }
 
-    Logger.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::parseTileData end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "ClippedMap::parseTileData end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////

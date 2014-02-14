@@ -26,6 +26,8 @@
 
 #include "gameobject.h"
 
+#include "core.h"
+
 ///////////////////////////////////////////////////////////////////////////
 
 GameObject::GameObject(const string& id,
@@ -77,12 +79,12 @@ GameObject::~GameObject()
 
 bool GameObject::checkCollision(const GameObject& other) const
 {
-    Logger.logMessage(LOG_STATE, LOG_CORE, "GameObject::checkCollision: start\n");
+    Log.logMessage(LOG_STATE, LOG_CORE, "GameObject::checkCollision: start\n");
 
     if(this->hasCollisionEnabled() == false ||
        other.hasCollisionEnabled() == false)
     {
-        Logger.logMessage(LOG_DEBUG2, LOG_CORE,
+        Log.logMessage(LOG_DEBUG2, LOG_CORE,
                           "GameObject::checkCollision: Collision detection not enabled for both elements\n");
         return false;
     }
@@ -101,7 +103,7 @@ bool GameObject::checkCollision(const GameObject& other) const
         }
     }
 
-    Logger.logMessage(LOG_STATE, LOG_CORE, "GameObject::checkCollision: end\n");
+    Log.logMessage(LOG_STATE, LOG_CORE, "GameObject::checkCollision: end\n");
     return false;
 }
 

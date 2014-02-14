@@ -29,6 +29,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "common.h"
 #include "inputevents.h"
 
 ///////////////////////////////////////////////////////////////////////////
@@ -42,38 +43,13 @@ class Inputhandler
             return instance;
         }
 
-        InputEvent getNextEvent()
-        {
-            SDL_Event event;
+        InputEvent getNextEvent() const;
 
-            while (SDL_PollEvent (&event))
-            {
-                if (event.type == SDL_QUIT)
-                {
-                    return QUIT;
-                }
-
-                if(event.type == SDL_KEYDOWN)
-                {
-                    switch(event.key.keysym.sym)
-                    {
-                        case SDLK_LEFT:
-                            return PLAYER_LEFT;
-
-                        case SDLK_RIGHT:
-                            return PLAYER_RIGHT;
-
-                        case SDLK_DOWN:
-                            return PLAYER_DOWN;
-
-                        case SDLK_UP:
-                            return PLAYER_UP;
-                    }
-                }
-            }
-
-            return NONE;
-        }
+    private:
+        explicit Inputhandler();
+        virtual ~Inputhandler();
 };
+
+///////////////////////////////////////////////////////////////////////////
 
 #endif

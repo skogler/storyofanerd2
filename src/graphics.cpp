@@ -25,6 +25,7 @@
  *-----------------------------------------------------------------------*/
 
 #include "graphics.h"
+#include "core.h"
 
 #define WINDOW_WIDTH    480
 #define WINDOW_HEIGHT   240
@@ -51,7 +52,7 @@ GraphicsCore::~GraphicsCore()
 
 ErrorCode GraphicsCore::initializeWindow()
 {
-    Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
+    Log.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
                       "GraphicsCore::initializeWindow start\n");
 
     assert(m_main_window == NULL);
@@ -59,7 +60,7 @@ ErrorCode GraphicsCore::initializeWindow()
     //TODO: move SDL_INIT_EVERYTHING somewhere else
     if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
-        Logger.logMessage(LOG_ERROR, LOG_SDL2_GRAPHICS,
+        Log.logMessage(LOG_ERROR, LOG_SDL2_GRAPHICS,
                           "GraphicsCore::initializeWindow: %s", SDLERROR());
         return ERROR_SDL_INIT;
     }
@@ -75,12 +76,12 @@ ErrorCode GraphicsCore::initializeWindow()
 
     if(m_main_window == nullptr)
     {
-        Logger.logMessage(LOG_ERROR, LOG_SDL2_GRAPHICS,
+        Log.logMessage(LOG_ERROR, LOG_SDL2_GRAPHICS,
                           "GraphicsCore::initializeWindow: %s", SDLERROR());
         return ERROR_SDL_INIT;
     }
 
-    Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
+    Log.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
                       "GraphicsCore::initializeWindow end\n");
     return OK;
 }
@@ -89,7 +90,7 @@ ErrorCode GraphicsCore::initializeWindow()
 
 ErrorCode GraphicsCore::initializeRenderer()
 {
-    Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
+    Log.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
                       "GraphicsCore::initializeRenderer start\n");
 
     assert(m_renderer == NULL);
@@ -100,12 +101,12 @@ ErrorCode GraphicsCore::initializeRenderer()
 
     if(m_renderer == nullptr)
     {
-        Logger.logMessage(LOG_ERROR, LOG_SDL2_GRAPHICS,
+        Log.logMessage(LOG_ERROR, LOG_SDL2_GRAPHICS,
                           "GraphicsCore::initializeRenderer: %s", SDLERROR());
         return ERROR_SDL_INIT;
     }
 
-    Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
+    Log.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
                       "GraphicsCore::initializeRenderer end\n");
 
     return OK;
@@ -115,7 +116,7 @@ ErrorCode GraphicsCore::initializeRenderer()
 
 void GraphicsCore::destroyWindow()
 {
-    Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
+    Log.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
                       "GraphicsCore::destroyWindow start\n");
 
     if(m_main_window != NULL)
@@ -123,7 +124,7 @@ void GraphicsCore::destroyWindow()
         SDL_DestroyWindow(m_main_window);
     }
 
-    Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
+    Log.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
                       "GraphicsCore::destroyWindow end\n");
 }
 
@@ -131,7 +132,7 @@ void GraphicsCore::destroyWindow()
 
 void GraphicsCore::destroyRenderer()
 {
-    Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
+    Log.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
                       "GraphicsCore::destroyRenderer start\n");
 
     if(m_renderer != NULL)
@@ -139,7 +140,7 @@ void GraphicsCore::destroyRenderer()
         SDL_DestroyRenderer(m_renderer);
     }
 
-    Logger.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
+    Log.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
                       "GraphicsCore::destroyRenderer end\n");
 }
 
@@ -151,7 +152,7 @@ SDL_Texture* GraphicsCore::createTextureFromBMP(const string& filename)
 
     if(bmp == nullptr)
     {
-        Logger.logMessage(LOG_ERROR, LOG_SDL2_GRAPHICS,
+        Log.logMessage(LOG_ERROR, LOG_SDL2_GRAPHICS,
                           "GraphicsCore::createTextureFromBMP: "
                           "Error loading file (%s)\n", SDLERROR());
         return NULL;
@@ -164,7 +165,7 @@ SDL_Texture* GraphicsCore::createTextureFromBMP(const string& filename)
 
     if(tex == nullptr)
     {
-        Logger.logMessage(LOG_ERROR, LOG_SDL2_GRAPHICS,
+        Log.logMessage(LOG_ERROR, LOG_SDL2_GRAPHICS,
                           "GraphicsCore::createTextureFromBMP: "
                           "Error creating texture (%s)\n", SDLERROR());
         return NULL;
@@ -263,7 +264,7 @@ void GraphicsCore::renderTexture(SDL_Texture* tex, int x, int y,
     {
         if((h != 0) != (w != 0))
         {
-            Logger.logMessage(LOG_WARNING, LOG_SDL2_GRAPHICS,
+            Log.logMessage(LOG_WARNING, LOG_SDL2_GRAPHICS,
                               "GraphicsCore::renderTexture: "
                               "One of the texture scaling values has been "
                               "set to 0. Ignoring set values...\n");

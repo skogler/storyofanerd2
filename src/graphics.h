@@ -27,9 +27,9 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#include "core.h"
-
 #include <SDL2/SDL.h>
+
+#include "common.h"
 
 struct SDL_Window;
 struct SDL_Renderer;

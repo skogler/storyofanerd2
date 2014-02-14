@@ -24,85 +24,85 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *-----------------------------------------------------------------------*/
 
-#include "graphicsobject.h"
+#include "objecthandler.h"
 
-#include "core.h"
-#include "graphics.h"
-
-///////////////////////////////////////////////////////////////////////////
-
-GraphicsObject::GraphicsObject(shared_ptr<SDL_Texture> texture,
-                               int x, int y, uint h, uint w) :
-    m_enabled(true),
-    m_texture(texture),
-    m_clip(NULL)
-{
-    SDL_Rect* dst = new SDL_Rect();
-    assert(dst);
-    dst->x = x;
-    dst->y = y;
-    dst->h = h;
-    dst->w = w;
-    m_dst.reset(dst);
-}
+#include "gameobject.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
-GraphicsObject::GraphicsObject(shared_ptr<SDL_Texture> texture,
-                               shared_ptr<SDL_Rect> clip,
-                               shared_ptr<SDL_Rect> dst) :
-    m_enabled(true),
-    m_texture(texture),
-    m_clip(clip), m_dst(dst)
+Objecthandler::Objecthandler()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
-GraphicsObject::GraphicsObject(shared_ptr<SDL_Rect> dst_rct) :
-    m_enabled(true),
-    m_texture(NULL),
-    m_clip(NULL),
-    m_dst(dst_rct)
+Objecthandler::~Objecthandler()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
-GraphicsObject::~GraphicsObject()
+void Objecthandler::reactToKeyEvent(InputEvent event)
 {
-    //TODO: cleanup
-}
+    bool handled = false;
 
-///////////////////////////////////////////////////////////////////////////
+    for(uint i = 0; i < m_game_objects.size(); i++)
+    {
+        handled = m_game_objects.at(i).get()->handleKeyEvent(event);
 
-void GraphicsObject::drawObject()
-{
-    if(m_enabled == false)
-    {
-        return;
-    }
-
-    if(m_texture == NULL && m_clip == NULL && m_dst != NULL)
-    {
-        GraphicsCore::instance().renderRectange(m_dst.get());
-    }
-    else if(m_clip != NULL)
-    {
-        GraphicsCore::instance().renderTextureClip(m_texture.get(), m_clip.get(),
-                m_dst.get());
-    }
-    else
-    {
-        GraphicsCore::instance().renderTextureDstOnly(m_texture.get(), m_dst.get());
+        if(handled == true)
+        {
+            break;
+        }
     }
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
-bool GraphicsObject::hasCollision(const GraphicsObject& other)
+void Objecthandler::updateAll()
 {
-    return SDL_HasIntersection(m_dst.get(), other.getDst().get());
+    for(uint i = 0; i < m_game_objects.size(); i++)
+    {
+        m_game_objects.at(i).get()->update();
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void Objecthandler::drawAll()
+{
+    for(uint i = 0; i < m_game_objects.size(); i++)
+    {
+        m_game_objects.at(i).get()->drawAll();
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void Objecthandler::addGameObject(shared_ptr<GameObject> object)
+{
+    m_game_objects.push_back(object);
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+bool Objecthandler::checkCollision(const GameObject& object)
+{
+    for(uint i = 0; i < m_game_objects.size(); i++)
+    {
+        //Cant collide with ourselves
+        if(object == *(m_game_objects.at(i).get()))
+        {
+            continue;
+        }
+
+        if(object.checkCollision(*(m_game_objects.at(i).get())) == true)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////

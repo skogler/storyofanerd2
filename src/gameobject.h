@@ -28,12 +28,11 @@
 #define GAMEOBJECT_H
 
 #include <vector>
-#include <string>
 
+#include "common.h"
 #include "graphicsobject.h"
 #include "inputevents.h"
 
-using std::string;
 using std::vector;
 
 ///////////////////////////////////////////////////////////////////////////

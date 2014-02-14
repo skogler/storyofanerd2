@@ -27,22 +27,22 @@
 #ifndef CLIPPEDMAP_H
 #define CLIPPEDMAP_H
 
-#include <SDL2/SDL.h>
-#include <vector>
-#include <string>
-
-#include "core.h"
-#include "graphics.h"
-#include "xmlloader.h"
+#include "common.h"
 #include "gameobject.h"
 
+#include <SDL2/SDL.h>
+#include <vector>
+
 using std::vector;
-using std::string;
+
+class LoadedMap;
 
 ///////////////////////////////////////////////////////////////////////////
 
 class ClippedMap : public GameObject
 {
+    DISABLECOPY(ClippedMap);
+
     public:
         explicit ClippedMap(LoadedMap* lmap);
         virtual ~ClippedMap();
@@ -67,7 +67,6 @@ class ClippedMap : public GameObject
 
         shared_ptr<SDL_Surface> m_tile_set_surface;
         shared_ptr<SDL_Texture> m_tile_set;
-        DISABLECOPY(ClippedMap);
 };
 
 ///////////////////////////////////////////////////////////////////////////

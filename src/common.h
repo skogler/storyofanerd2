@@ -27,14 +27,19 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#include <string>
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
 #include <assert.h>
+#include <memory>
+
+#include "errorcodes.h"
 
 using std::cout;
 using std::endl;
 using std::string;
+using std::shared_ptr;
 
 typedef unsigned int uint;
 typedef unsigned long ulong;

@@ -30,9 +30,10 @@
 #include <SDL2/SDL.h>
 #include <vector>
 
-#include "core.h"
 #include "common.h"
-#include "gameobject.h"
+#include "inputevents.h"
+
+class GameObject;
 
 using std::vector;
 
@@ -40,6 +41,8 @@ using std::vector;
 
 class Objecthandler
 {
+    DISABLECOPY(Objecthandler);
+
     public:
         static Objecthandler& instance()
         {
@@ -47,72 +50,21 @@ class Objecthandler
             return instance;
         }
 
-        void reactToKeyEvent(InputEvent event)
-        {
-            bool handled = false;
+        void reactToKeyEvent(InputEvent event);
 
-            for(uint i = 0; i < m_game_objects.size(); i++)
-            {
-                handled = m_game_objects.at(i).get()->handleKeyEvent(event);
+        void updateAll();
 
-                if(handled == true)
-                {
-                    break;
-                }
-            }
-        }
+        void drawAll();
 
-        void updateAll()
-        {
-            for(uint i = 0; i < m_game_objects.size(); i++)
-            {
-                m_game_objects.at(i).get()->update();
-            }
-        }
+        void addGameObject(shared_ptr<GameObject> object);
 
-        void drawAll()
-        {
-            for(uint i = 0; i < m_game_objects.size(); i++)
-            {
-                m_game_objects.at(i).get()->drawAll();
-            }
-        }
-
-        void addGameObject(shared_ptr<GameObject> object)
-        {
-            m_game_objects.push_back(object);
-        }
-
-        bool checkCollision(const GameObject& object)
-        {
-            for(uint i = 0; i < m_game_objects.size(); i++)
-            {
-                //Cant collide with ourselves
-                if(object == *(m_game_objects.at(i).get()))
-                {
-                    continue;
-                }
-
-                if(object.checkCollision(*(m_game_objects.at(i).get())) == true)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        bool checkCollision(const GameObject& object);
 
     private:
-        Objecthandler()
-        {
-        };
-        virtual ~Objecthandler()
-        {
-        };
+        explicit Objecthandler();
+        virtual ~Objecthandler();
 
         vector<shared_ptr <GameObject> > m_game_objects;
-
-        DISABLECOPY(Objecthandler);
 };
 
 ///////////////////////////////////////////////////////////////////////////

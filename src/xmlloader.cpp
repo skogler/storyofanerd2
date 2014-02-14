@@ -106,7 +106,7 @@ LoadedMap::~LoadedMap()
 
 ErrorCode LoadedMap::loadFile()
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadFile start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadFile start\n");
 
     int ret = m_doc.LoadFile(m_filename.c_str());
 
@@ -140,7 +140,7 @@ ErrorCode LoadedMap::loadFile()
         child = child->NextSiblingElement();
     }
 
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadFile end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadFile end\n");
 
     printMapInformation();
     return OK;
@@ -150,7 +150,7 @@ ErrorCode LoadedMap::loadFile()
 
 void LoadedMap::loadMap(XMLElement* element)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadMap start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadMap start\n");
     stringstream width (element->Attribute(XML_MAP_WIDTH.c_str()));
     stringstream height (element->Attribute(XML_MAP_HEIGHT.c_str()));
     stringstream tilewidth (element->Attribute(XML_MAP_TILEWIDTH.c_str()));
@@ -159,14 +159,14 @@ void LoadedMap::loadMap(XMLElement* element)
     height >> m_map.height;
     tilewidth >> m_map.tilewidth;
     tileheight >> m_map.tileheight;
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadMap end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadMap end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void LoadedMap::loadTileset(XMLElement* element)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTileset\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTileset\n");
 
     assert(element);
 
@@ -199,14 +199,14 @@ void LoadedMap::loadTileset(XMLElement* element)
     m_tilesets.push_back(tileset);
     loadTiles(first_tile, &m_tilesets.back());
 
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTileset end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTileset end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void LoadedMap::loadImageSource(XMLElement* element, TileSet* target)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadImageSource start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadImageSource start\n");
 
     assert(element);
     assert(target);
@@ -219,21 +219,21 @@ void LoadedMap::loadImageSource(XMLElement* element, TileSet* target)
     width >> target->image.width;
     height >> target->image.height;
 
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadImageSource end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadImageSource end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void LoadedMap::loadTerrains(XMLElement* element, TileSet* target)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTerrains start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTerrains start\n");
 
     assert(element);
     assert(target);
 
     XMLElement* terrain = element->FirstChildElement(XML_TERRAIN.c_str());
 
-    Logger.logMessage(LOG_DEBUG, LOG_MAP,
+    Log.logMessage(LOG_DEBUG, LOG_MAP,
                       "LoadedMap::loadTerrains: Found first terrain\n");
 
     while(terrain)
@@ -255,14 +255,14 @@ void LoadedMap::loadTerrains(XMLElement* element, TileSet* target)
         terrain = terrain->NextSiblingElement();
     }
 
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTerrains end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTerrains end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void LoadedMap::loadTerrainProperties(XMLElement* element, TerrainType* target)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP,
+    Log.logMessage(LOG_STATE, LOG_MAP,
                       "LoadedMap::loadTerrainProperties start\n");
 
     assert(element);
@@ -280,14 +280,14 @@ void LoadedMap::loadTerrainProperties(XMLElement* element, TerrainType* target)
         property = property->NextSiblingElement();
     }
 
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTerrainProperties end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTerrainProperties end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void LoadedMap::loadTiles(XMLElement* element, TileSet* target)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTiles start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTiles start\n");
 
     assert(target);
 
@@ -306,10 +306,10 @@ void LoadedMap::loadTiles(XMLElement* element, TileSet* target)
         element = element->NextSiblingElement();
     }
 
-    Logger.logMessage(LOG_DEBUG, LOG_MAP,
+    Log.logMessage(LOG_DEBUG, LOG_MAP,
                       "LoadedMap::loadTiles: Loaded %d tiles for %s\n",
                       target->tiles.size(), target->name.c_str());
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTiles start end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadTiles start end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -317,7 +317,7 @@ void LoadedMap::loadTiles(XMLElement* element, TileSet* target)
 void LoadedMap::mapTilesToTerrainPointers(string parsed, TileSet* tset,
         Tile* target)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP,
+    Log.logMessage(LOG_STATE, LOG_MAP,
                       "LoadedMap::mapTilesToTerrainPointers start\n");
 
     assert(tset);
@@ -334,25 +334,25 @@ void LoadedMap::mapTilesToTerrainPointers(string parsed, TileSet* tset,
         {
             case 1:
                 target->terrain_1 = &tset->terraintypes[parsed_val];
-                Logger.logMessage(LOG_DEBUG2, LOG_MAP, "Mapping terraintype 1 to %s\n",
+                Log.logMessage(LOG_DEBUG2, LOG_MAP, "Mapping terraintype 1 to %s\n",
                                   target->terrain_1->name.c_str());
                 break;
 
             case 2:
                 target->terrain_2 = &tset->terraintypes[parsed_val];
-                Logger.logMessage(LOG_DEBUG2, LOG_MAP, "Mapping terraintype 2 to %s\n",
+                Log.logMessage(LOG_DEBUG2, LOG_MAP, "Mapping terraintype 2 to %s\n",
                                   target->terrain_2->name.c_str());
                 break;
 
             case 3:
                 target->terrain_3 = &tset->terraintypes[parsed_val];
-                Logger.logMessage(LOG_DEBUG2, LOG_MAP, "Mapping terraintype 3 to %s\n",
+                Log.logMessage(LOG_DEBUG2, LOG_MAP, "Mapping terraintype 3 to %s\n",
                                   target->terrain_3->name.c_str());
                 break;
 
             case 4:
                 target->terrain_4 = &tset->terraintypes[parsed_val];
-                Logger.logMessage(LOG_DEBUG2, LOG_MAP, "Mapping terraintype 4 to %s\n",
+                Log.logMessage(LOG_DEBUG2, LOG_MAP, "Mapping terraintype 4 to %s\n",
                                   target->terrain_4->name.c_str());
                 break;
         }
@@ -365,7 +365,7 @@ void LoadedMap::mapTilesToTerrainPointers(string parsed, TileSet* tset,
         cnt = cnt + 1;
     }
 
-    Logger.logMessage(LOG_STATE, LOG_MAP,
+    Log.logMessage(LOG_STATE, LOG_MAP,
                       "LoadedMap::mapTilesToTerrainPointers end\n");
 }
 
@@ -373,7 +373,7 @@ void LoadedMap::mapTilesToTerrainPointers(string parsed, TileSet* tset,
 
 void LoadedMap::loadLayer(XMLElement* element)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadLayer start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadLayer start\n");
 
     assert(element);
 
@@ -401,18 +401,18 @@ void LoadedMap::loadLayer(XMLElement* element)
         parsed_layer.data = data->GetText();
     }
 
-    Logger.logMessage(LOG_DEBUG, LOG_MAP,
+    Log.logMessage(LOG_DEBUG, LOG_MAP,
                       "LoadedMap::loadLayer: Loaded layer: %s\n",
                       parsed_layer.name.c_str());
     m_layers.push_back(parsed_layer);
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadLayer end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadLayer end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void LoadedMap::loadObjectGroup(XMLElement* element)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadObjectGroup start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadObjectGroup start\n");
 
     assert(element);
 
@@ -440,14 +440,14 @@ void LoadedMap::loadObjectGroup(XMLElement* element)
 
     m_objectgroups.push_back(parsed_group);
 
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadObjectGroup end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadObjectGroup end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void LoadedMap::loadObjects(XMLElement* element, ObjectGroup* target)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadObjects start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadObjects start\n");
 
     assert(target);
 
@@ -473,7 +473,7 @@ void LoadedMap::loadObjects(XMLElement* element, ObjectGroup* target)
         element = element ->NextSiblingElement();
     }
 
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadObjects end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::loadObjects end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -481,7 +481,7 @@ void LoadedMap::loadObjects(XMLElement* element, ObjectGroup* target)
 void LoadedMap::loadObjectGroupProperties(XMLElement* element,
         ObjectGroup* target)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP,
+    Log.logMessage(LOG_STATE, LOG_MAP,
                       "LoadedMap::loadObjectGroupProperties start\n");
 
     assert(element);
@@ -500,7 +500,7 @@ void LoadedMap::loadObjectGroupProperties(XMLElement* element,
         property = property->NextSiblingElement();
     }
 
-    Logger.logMessage(LOG_STATE, LOG_MAP,
+    Log.logMessage(LOG_STATE, LOG_MAP,
                       "LoadedMap::loadObjectGroupProperties end\n");
 }
 
@@ -509,7 +509,7 @@ void LoadedMap::loadObjectGroupProperties(XMLElement* element,
 string LoadedMap::getAttributeString(XMLElement* element,
                                      const string& attribute_name)
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::getAttributeString start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::getAttributeString start\n");
 
     assert(element);
     const char* buffer = element->Attribute(attribute_name.c_str());
@@ -520,22 +520,22 @@ string LoadedMap::getAttributeString(XMLElement* element,
     }
     else
     {
-        Logger.logMessage(LOG_WARNING, LOG_MAP, "Unable to parse attribute %s",
+        Log.logMessage(LOG_WARNING, LOG_MAP, "Unable to parse attribute %s",
                           attribute_name.c_str());
         return "";
     }
 
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::getAttributeString end\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::getAttributeString end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void LoadedMap::printMapInformation()
 {
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::printMapInformation start\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::printMapInformation start\n");
 
-    Logger.logMessage(LOG_INFO, LOG_MAP, "=== Printing map information... ===\n");
-    Logger.logMessage(LOG_INFO, LOG_MAP, "Map stats follow...\n"
+    Log.logMessage(LOG_INFO, LOG_MAP, "=== Printing map information... ===\n");
+    Log.logMessage(LOG_INFO, LOG_MAP, "Map stats follow...\n"
                       "Filename: %s\nNumber of tilesets: %d\n"
                       "Number of layers: %d\nNumber of objectgroups: %d\n",
                       m_filename.c_str(), m_tilesets.size(),
@@ -543,7 +543,7 @@ void LoadedMap::printMapInformation()
 
     for(uint i = 0; i < m_tilesets.size(); i++)
     {
-        Logger.logMessage(LOG_INFO, LOG_MAP, "Tileset information (idx: %d)\n"
+        Log.logMessage(LOG_INFO, LOG_MAP, "Tileset information (idx: %d)\n"
                           "Tileset name: %s\n"
                           "Number of tiles: %d\n"
                           "Number of terrains: %u\n",
@@ -555,7 +555,7 @@ void LoadedMap::printMapInformation()
 
     for(uint i = 0; i < m_objectgroups.size(); i++)
     {
-        Logger.logMessage(LOG_INFO, LOG_MAP, "Objectgroup information (idx %d)\n"
+        Log.logMessage(LOG_INFO, LOG_MAP, "Objectgroup information (idx %d)\n"
                           "Objectgroup name: %s\n"
                           "Number of properties: %u\n",
                           i,
@@ -563,8 +563,8 @@ void LoadedMap::printMapInformation()
                           m_objectgroups.at(i).properties.size());
     }
 
-    Logger.logMessage(LOG_INFO, LOG_MAP, "=== Printing map information end ===\n");
-    Logger.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::printMapInformation end\n");
+    Log.logMessage(LOG_INFO, LOG_MAP, "=== Printing map information end ===\n");
+    Log.logMessage(LOG_STATE, LOG_MAP, "LoadedMap::printMapInformation end\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////
