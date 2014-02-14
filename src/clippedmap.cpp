@@ -71,13 +71,8 @@ void ClippedMap::copyTilesToRender(int viewport_x, int viewport_y)
     uint x_coord = 0;
     uint y_coord = 0;
 
-    int current_clip = 0;
-
-    for(vector<int>::iterator it = m_tile_data_parsed.begin();
-        it != m_tile_data_parsed.end(); ++it)
+    for(const auto& current_clip : m_tile_data_parsed)
     {
-        current_clip = *it;
-
         shared_ptr<SDL_Rect> dst(new SDL_Rect());
         dst->x = x_coord - viewport_x;
         dst->y = y_coord - viewport_y;
