@@ -63,10 +63,14 @@ class MovingStateSequencer
         DISABLECOPY(MovingStateSequencer);
 
     public:
-        explicit MovingStateSequencer(MovingState initial_position = INVALID) :
+        explicit MovingStateSequencer(MovingState initial_position = INVALID,
+                                      uint update_rate = 3) :
             m_previous_state(initial_position),
             m_current_state(initial_position),
-            m_next_state(initial_position)
+            m_next_state(initial_position),
+            m_update_rate(update_rate),
+            m_update_rate_counter(0),
+            m_draw_next_animation(false)
         {
         }
 
@@ -112,8 +116,29 @@ class MovingStateSequencer
                         m_previous_state).last_animation_index);
         }
 
+        inline bool doCheckUpdate()
+        {
+            m_update_rate_counter = m_update_rate_counter + 1;
+
+            if(m_update_rate_counter == m_update_rate)
+            {
+                m_update_rate_counter   = 0;
+                m_draw_next_animation   = true;
+                return true;
+            }
+
+            m_draw_next_animation = false;
+            return false;
+        }
+
         inline void applyNextState()
         {
+            doCheckUpdate();
+            if(m_draw_next_animation == false)
+            {
+                return;
+            }
+
             m_previous_state    = m_current_state;
 
             if(m_next_state == INVALID)
@@ -130,6 +155,11 @@ class MovingStateSequencer
         inline int updateCurrentAnimationIndex()
         {
             auto state_it = m_sequences.find(m_current_state);
+
+            if(m_draw_next_animation == false)
+            {
+                return state_it->second.possible_animations.at(state_it->second.last_animation_index);
+            }
 
             if(state_it->second.last_animation_index + 1 ==
                state_it->second.possible_animations.size())
@@ -152,6 +182,11 @@ class MovingStateSequencer
         MovingState     m_previous_state;
         MovingState     m_current_state;
         MovingState     m_next_state;
+
+        uint            m_update_rate;
+        uint            m_update_rate_counter;
+
+        bool            m_draw_next_animation;
 };
 
 ///////////////////////////////////////////////////////////////////////////
