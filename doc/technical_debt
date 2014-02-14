@@ -7,7 +7,15 @@
 
 * Consider creating typedefs for shared_pointer<XXX>
 * Fix viewport limiting by making map size and WINDOW SIZE dynamic
+* check std11 features:
+    * consider std::move? (see goingnative2013)
+    * maybe other features available?
+* check compiler flags for warnings
+* compilation also with clang
+* Map is currently done the lazy way, must support multiple layers
 
 = Major Reworks =
 
+* Keep quadtree (or other spatial representation) of game data (so that not
+  everything gets drawn / collision detected)
 * Dont use singletons
