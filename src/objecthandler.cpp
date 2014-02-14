@@ -44,13 +44,9 @@ Objecthandler::~Objecthandler()
 
 void Objecthandler::reactToKeyEvent(InputEvent event)
 {
-    bool handled = false;
-
-    for(uint i = 0; i < m_game_objects.size(); i++)
+    for(auto it = m_game_objects.begin(); it != m_game_objects.end(); it++)
     {
-        handled = m_game_objects.at(i).get()->handleKeyEvent(event);
-
-        if(handled == true)
+        if(it->get()->handleKeyEvent(event) == true)
         {
             break;
         }
@@ -61,9 +57,9 @@ void Objecthandler::reactToKeyEvent(InputEvent event)
 
 void Objecthandler::updateAll()
 {
-    for(uint i = 0; i < m_game_objects.size(); i++)
+    for(auto it = m_game_objects.begin(); it != m_game_objects.end(); it++)
     {
-        m_game_objects.at(i).get()->update();
+        it->get()->update();
     }
 }
 
@@ -71,9 +67,9 @@ void Objecthandler::updateAll()
 
 void Objecthandler::drawAll()
 {
-    for(uint i = 0; i < m_game_objects.size(); i++)
+    for(auto it = m_game_objects.begin(); it != m_game_objects.end(); it++)
     {
-        m_game_objects.at(i).get()->drawAll();
+        it->get()->drawAll();
     }
 }
 
@@ -88,15 +84,15 @@ void Objecthandler::addGameObject(shared_ptr<GameObject> object)
 
 bool Objecthandler::checkCollision(const GameObject& object)
 {
-    for(uint i = 0; i < m_game_objects.size(); i++)
+    for(auto it = m_game_objects.begin(); it != m_game_objects.end(); it++)
     {
         //Cant collide with ourselves
-        if(object == *(m_game_objects.at(i).get()))
+        if(object == *(it->get()))
         {
             continue;
         }
 
-        if(object.checkCollision(*(m_game_objects.at(i).get())) == true)
+        if(object.checkCollision(*(it->get())) == true)
         {
             return true;
         }
