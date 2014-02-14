@@ -213,7 +213,7 @@ void Player::createClipsFromSprite()
 
 void Player::createGraphicsObjects()
 {
-    for(uint i = 0; i < m_player_clips.size(); i++)
+    for(auto it = m_player_clips.begin(); it != m_player_clips.end(); it++)
     {
         shared_ptr<SDL_Rect> dst(new SDL_Rect());
         dst.get()->x = m_position_x;
@@ -221,7 +221,7 @@ void Player::createGraphicsObjects()
         dst.get()->w = m_clip_x;
         dst.get()->h = m_clip_y;
         shared_ptr<GraphicsObject> playergraphics(new GraphicsObject(m_sprite_texture,
-                m_player_clips.at(i), dst));
+                *it, dst));
         playergraphics.get()->setEnabled(false);
         this->addGraphicsObject(playergraphics);
     }

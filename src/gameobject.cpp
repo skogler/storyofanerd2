@@ -48,9 +48,10 @@ void GameObject::update()
 
 void GameObject::drawAll()
 {
-    for(uint i = 0; i < m_graphics_objects.size(); i++)
+    for(auto it = m_graphics_objects.begin();
+        it != m_graphics_objects.end(); it++)
     {
-        m_graphics_objects.at(i).get()->drawObject();
+        it->get()->drawObject();
     }
 }
 
@@ -92,11 +93,11 @@ bool GameObject::checkCollision(const GameObject& other) const
     const vector<shared_ptr <GraphicsObject> > other_objects =
         other.getGraphicsObjects();
 
-    for(uint i = 0; i < m_graphics_objects.size(); i++)
+    for(auto i = m_graphics_objects.begin(); i != m_graphics_objects.end(); i++)
     {
-        for(uint j = 0; j < other_objects.size(); j++)
+        for(auto j = other_objects.begin(); j != other_objects.end(); j++)
         {
-            if(m_graphics_objects.at(i).get()->hasCollision(*(other_objects.at(j).get())))
+            if(i->get()->hasCollision(*(j->get())))
             {
                 return true;
             }
