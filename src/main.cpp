@@ -73,6 +73,9 @@ int main(int argc, char* argv[])
     handler.addGameObject(clipped);
     handler.addGameObject(player);
 
+    handler.setActiveMapRef(clipped);
+    handler.setPlayerRef(player);
+
     MovingStateSequence seq_look_front;
     seq_look_front.possible_animations.push_back(0);
     seq_look_front.last_animation_index = 0;
@@ -128,6 +131,8 @@ int main(int argc, char* argv[])
     seq_move_back.last_animation_index = 0;
     seq_move_back.revert_to = LOOK_BACK;
     player->addAnimationSequenceFromSprite(MOVE_BACK, seq_move_back);
+
+    gcore.updateViewportLimits();
 
     bool quit = false;
 

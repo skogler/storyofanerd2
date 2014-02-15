@@ -51,6 +51,9 @@ class ClippedMap : public GameObject
         void copyTilesToRender(int viewport_x, int viewport_y);
         void copyMapBorderToRender();
 
+        int getMapWidth() const;
+        int getMapHeight() const;
+
     private:
         void loadTexture();
         void createClips();

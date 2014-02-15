@@ -197,31 +197,25 @@ void ClippedMap::createMapBorder()
     shared_ptr<SDL_Rect> border_top(new SDL_Rect());
     border_top->x = 0;
     border_top->y = 0;
-    border_top->w = m_loaded_map->getTileMap().width *
-                    m_loaded_map->getTileMap().tilewidth;
+    border_top->w = getMapWidth();
     border_top->h = 5;
 
     shared_ptr<SDL_Rect> border_left(new SDL_Rect());
     border_left->x = 0;
     border_left->y = 0;
     border_left->w = 5;
-    border_left->h = m_loaded_map->getTileMap().height *
-                     m_loaded_map->getTileMap().tileheight;
+    border_left->h = getMapHeight();
 
     shared_ptr<SDL_Rect> border_right(new SDL_Rect());
-    border_right->x = m_loaded_map->getTileMap().width *
-                      m_loaded_map->getTileMap().tilewidth;
+    border_right->x = getMapWidth();
     border_right->y = 0;
     border_right->w = 5;
-    border_right->h = m_loaded_map->getTileMap().height *
-                      m_loaded_map->getTileMap().tileheight;
+    border_right->h = getMapHeight();
 
     shared_ptr<SDL_Rect> border_bottom(new SDL_Rect());
     border_bottom->x = 0;
-    border_bottom->y = m_loaded_map->getTileMap().height *
-                       m_loaded_map->getTileMap().tileheight;
-    border_bottom->w = m_loaded_map->getTileMap().width *
-                       m_loaded_map->getTileMap().tilewidth;
+    border_bottom->y = getMapHeight();
+    border_bottom->w = getMapWidth();
     border_bottom->h = 5;
 
     m_map_borders.push_back(border_top);
@@ -232,3 +226,18 @@ void ClippedMap::createMapBorder()
 
 ///////////////////////////////////////////////////////////////////////////
 
+int ClippedMap::getMapWidth() const
+{
+    return m_loaded_map->getTileMap().width * 
+           m_loaded_map->getTileMap().tilewidth;
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+inline int ClippedMap::getMapHeight() const
+{
+    return m_loaded_map->getTileMap().height * 
+           m_loaded_map->getTileMap().tileheight;
+}
+
+///////////////////////////////////////////////////////////////////////////

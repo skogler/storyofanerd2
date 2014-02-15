@@ -24,6 +24,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *-----------------------------------------------------------------------*/
 
+#include "objecthandler.h"
 #include "graphics.h"
 #include "core.h"
 
@@ -68,12 +69,6 @@ ErrorCode GraphicsCore::initializeWindow()
     m_main_window = SDL_CreateWindow("TEST", 100, 100, WINDOW_WIDTH, WINDOW_HEIGHT,
                                      SDL_WINDOW_SHOWN);
 
-    //TODO: Move these limits somewhere else and make MAP SIZE configurable
-    m_viewport_limit_top    = 0;
-    m_viewport_limit_left   = 0;
-    m_viewport_limit_right  = 2048 - WINDOW_WIDTH;
-    m_viewport_limit_bottom = 1024 - WINDOW_HEIGHT;
-
     if(m_main_window == nullptr)
     {
         Log.logMessage(LOG_ERROR, LOG_SDL2_GRAPHICS,
@@ -84,6 +79,23 @@ ErrorCode GraphicsCore::initializeWindow()
     Log.logMessage(LOG_STATE, LOG_SDL2_GRAPHICS,
                       "GraphicsCore::initializeWindow end\n");
     return OK;
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GraphicsCore::updateViewportLimits()
+{
+    int top;
+    int left;
+    int right;
+    int bottom;
+
+    Scene.getMapBoundaries(left, right, top, bottom);
+
+    m_viewport_limit_top    = top;
+    m_viewport_limit_left   = left;
+    m_viewport_limit_right  = right - WINDOW_WIDTH;
+    m_viewport_limit_bottom = bottom- WINDOW_HEIGHT;
 }
 
 ///////////////////////////////////////////////////////////////////////////

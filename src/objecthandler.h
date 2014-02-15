@@ -34,6 +34,8 @@
 #include "inputevents.h"
 
 class GameObject;
+class ClippedMap;
+class Player;
 
 using std::vector;
 
@@ -51,20 +53,33 @@ class Objecthandler
         }
 
         void reactToKeyEvent(InputEvent event);
-
         void updateAll();
-
         void drawAll();
-
         void addGameObject(shared_ptr<GameObject> object);
-
         bool checkCollision(const GameObject& object);
+
+        inline void setActiveMapRef(shared_ptr<ClippedMap> active_map)
+        {
+            m_active_map = active_map;
+        }
+
+        inline void setPlayerRef(shared_ptr<Player> player)
+        {
+            m_player = player;
+        }
+
+        void getMapBoundaries(int &left, int &right, int &top, int &bottom) const;
+        void getPlayerPosition(uint &x, uint &y) const;
+        uint getPlayerPositionX() const;
+        uint getPlayerPositionY() const;
 
     private:
         explicit Objecthandler();
         virtual ~Objecthandler();
 
         vector<shared_ptr <GameObject> > m_game_objects;
+        shared_ptr<ClippedMap> m_active_map;
+        shared_ptr<Player> m_player;
 };
 
 ///////////////////////////////////////////////////////////////////////////

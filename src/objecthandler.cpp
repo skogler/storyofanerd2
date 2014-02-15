@@ -27,6 +27,8 @@
 #include "objecthandler.h"
 
 #include "gameobject.h"
+#include "clippedmap.h"
+#include "player.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -99,6 +101,39 @@ bool Objecthandler::checkCollision(const GameObject& object)
     }
 
     return false;
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void Objecthandler::getMapBoundaries(int &left, int &right, 
+                                     int &top, int &bottom) const
+{
+    left    = 0;
+    right   = m_active_map->getMapWidth();
+    top     = 0;
+    bottom  = m_active_map->getMapHeight();
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void Objecthandler::getPlayerPosition(uint &x, uint &y) const
+{
+    x = getPlayerPositionX();
+    y = getPlayerPositionY();
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+uint Objecthandler::getPlayerPositionX() const
+{
+    return m_player->getPositionX();
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+uint Objecthandler::getPlayerPositionY() const
+{
+    return m_player->getPositionY();
 }
 
 ///////////////////////////////////////////////////////////////////////////

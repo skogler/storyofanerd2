@@ -69,6 +69,7 @@ class GraphicsCore
         void renderTextureClip(SDL_Texture* tex, SDL_Rect* clip, SDL_Rect* dst);
         void renderRectange(SDL_Rect* rect);
 
+        void updateViewportLimits();
         void updateViewportRelativeTo(uint x, uint y);
 
         inline const int getViewportXOffset() const
